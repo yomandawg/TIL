@@ -1,6 +1,6 @@
 # cURL
 
-> *c*lient *U*niform *R*esource *L*ocator\
+> *c*lient *U*niform *R*esource *L*ocator
 > 
 > 다양한 통신 프로토콜을 이용하여 데이터를 전송하기 위한 library 및 *CLI*(command-line interface) software
 
@@ -15,10 +15,10 @@ $ sudo apt-get install curl
 ## 특징
 
 * 무료, 오픈소스 software
-* URL syntax를 사용해 다양한 프로토콜로 데이터 전송을 가능케 한다.
+* URL syntax를 사용해 다양한 프로토콜 요청을 가능케 한다.
   * FTP, HTTP(HTTPS), RTSP, LDAP, TELNET 등
-*  http 요청 메서드(GET, POST, PUT, DELETE 등)를 cmdline에서 url과 함께 전송할 수 있기 때문에 REST한 웹개발에 매우 유용
-    * ex) `curl -X GET https://curl.haxx.se` - 해당 사이트에 GET 메서드로 HTTP document를 받아온다.
+*  http 메서드(GET, POST, PUT, DELETE 등)를 cmdline에서 url과 함께 전송할 수 있기 때문에 웹개발에 유용
+    * ex) `curl -X GET https://curl.haxx.se` - 해당 url에 GET request를 보낸다
 
 
 ## 문법
@@ -29,14 +29,9 @@ $ sudo apt-get install curl
   * -# (progress) : 상태 바 표시
   * -o (output) : output 파일 write
     * `curl -o localpage.html http://www.netscape.com/`
-  * *-H* (header): 추가 헤더 설정 및 전달
-    * `curl -H "X-you-and-me: yes" www.love.com`
   * -i (include) : http 헤더 표시
   * -v (verbose): request 및 response를 주고받는 과정을 표시; 추가 정보 표시
   * -s : 진행 메세지 표시 없애기
-  * *-d* (data) : http post 데이터 추가
-    * `curl -d "name=Rafael%20Sagula&phone=3320780" http://www.where.com/guest.cgi`
-  * *-X* (request): request 메서드 추가
   * -u : http에 user 및 password 전송
     * `curl -u name:passwd http://machine.domain/full/path/to/file`
   * -k (insecure) : SSL 강제 허가
