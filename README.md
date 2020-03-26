@@ -12,3 +12,6 @@
   5. [Chrome Developer Tools](https://github.com/yomandawg/TIL/blob/master/202003/Chrome%20Developer%20Tools.md)
   6. [Network](https://github.com/yomandawg/TIL/blob/master/202003/Network.md)
   7. [MVC](https://github.com/yomandawg/TIL/blob/master/202003/MVC.md)
+  8. [Vue](https://github.com/yomandawg/TIL/blob/master/202003/Vue.md)
+  9. [Python](https://github.com/yomandawg/TIL/blob/master/202003/Python.md)
+  10. [JavaScript](https://github.com/yomandawg/TIL/blob/master/202003/JavaScript.md)

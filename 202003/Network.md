@@ -107,6 +107,17 @@ IP주소: 192.168.1.0
 * 일부는 요청된 내용을 캐시로 저장한다. 후에 캐시 안의 정보를 요구하는 요청에는 원격 서버에 접속하여 데이터를 가져올 필요가 없으므로 전송 시간 절약 및 트래픽 저감 효과
 
 
+## SSL (HTTPS)
+
+> Secure Sockets Layer == Transport Layer Security(TLS)
+
+* Netscape사에서 만든 통신 보안을 위한 암호 규약
+* TCP/IP 네트워크에서 도청, 간섭, 위조를 방지하기 위함
+  1. 지원 가능 암호화 교환
+  2. 인증 교환
+  3. 대칭키 암호화(symmetric-key: 암호화, 복호화에 같은 키를 사용) 및 인증
+
+
 ## MAC Address
 
 > Media Access Control
@@ -145,3 +156,58 @@ IP주소: 192.168.1.0
 * public outside address와 private inside address의 사이에서 border router로서 역할
 * 내부망에서는 사설 IP주소를 사용해 통신하고, 외부망 통신시 NAT을 거쳐 공인 IP 주소로 변환
 * 사설 네트워크에 속한 여러 개의 호스트가 하나의 공인 IP주소를 사용해 인터넷에 접속하기 위함
+
+
+## DMZ
+
+> Demilitarized Zone
+
+* 내부 네트워크와 외부 네트워크 사이의 서브넷
+  * 삼각 방화벽
+* 내부 네트워크와 외부 네트워크는 모두 DMZ에 연결할 수 있지만, DMZ 내의 컴퓨터는 오직 외부 네트워크만 연결할 수 있음
+  * DMZ 안에 있는 호스트들은 내부 네트워크로 연결할 수 없다
+* 내부 네트워크로 연결을 시도하는 외부 네트워크는 DMZ에서 걸러진다
+* 메일서버, 웹서버, DNS 서버 등 외부에서 접근되어야 할 필요가 있는 서버를 위해 사용
+* 포트 주소 변환(PAT)을 통해 제어됨
+
+
+## VPN
+
+> Virtual Private Network
+
+* 내용을 바깥에 드러내지 않고 통신하는 사설 통신망
+* 전용선의 비용한계를 극복하기 위해 사설망 위에서 제한된 가상 네트워크를 구축
+* 인터넷 위에서 정해진 protocol 또는 서비스 수준 계약으로 통신
+
+
+## 가상환경
+
+### VDI
+> Virtual Desktop Infrastructure
+* 가상 데스크톱 기술
+* 사용자는 개인 IO로 작업하지만, 실제 컴퓨팅 환경은 데이터 센터에 구축된 서버에서 운영됨
+
+### RDP
+> Remote Desktop Protocol
+* MS사의 원격 연결 protocol
+* 다른 컴퓨터에 원격 GUI를 제공
+
+### VNC
+> Virtual Network Computing
+* RFB 프로토콜을 사용하여 다른 컴퓨터의 GUI를 제공
+* IO 이벤트를 한 컴퓨터에서 다른 컴퓨터로 전송시켜서 목적지의 GUI를 갱신
+
+
+## NAC
+
+> Network Access Control
+
+* 네트워크 접속시 보안정책을 검사하여 접속을 제어함
+* NAC 시스템에서 연결된 단말의 정보를 수집하고 이를 바탕으로 분류 및 보안 제어를 능동적으로 수행
+
+
+## Commands
+
+`nslookup` - name server lookup; get domain name from the dns server
+`route` - routing table 편집 및 수정
+`netstat` - 네트워크 연결 상태보기
