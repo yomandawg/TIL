@@ -2,6 +2,9 @@
 
 > 네트워크 개념
 
+## 네트워크 계층
+<center><img src="https://t1.daumcdn.net/cfile/tistory/99F6363359FDDC9E1F" width=400></center>
+
 
 ## IP
 
