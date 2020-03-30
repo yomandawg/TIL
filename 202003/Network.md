@@ -142,6 +142,19 @@ IP주소: 192.168.1.0
 * 이더넷 카드, 네트워크 어댑터, 랜카드로 불리며 컴퓨터간 신호를 주고받는 하드웨어
 
 
+## NTP
+
+> Network Time Protocol
+
+* 같은 네트워크 내의 시간을 동기화
+* 컴퓨터 클록 시간을 1ms 이하까지 동기화하기 위해 UTC를 사용
+* 기준이 되는 서버로부터 장비들의 시간을 동기화
+```bash
+show ntp status
+ntp server 0.0.0.0
+```
+
+
 ## LAN
 
 > Local Area Network

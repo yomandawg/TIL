@@ -14,4 +14,4 @@
   7. [MVC](https://github.com/yomandawg/TIL/blob/master/202003/MVC.md)
   8. [Vue](https://github.com/yomandawg/TIL/blob/master/202003/Vue.md)
   9. [Python](https://github.com/yomandawg/TIL/blob/master/202003/Python.md)
-  10. [JavaScript](https://github.com/yomandawg/TIL/blob/master/202003/JavaScript.md)
+  10. [Algorithms](https://github.com/yomandawg/TIL/blob/master/202003/Algorithms.md)
