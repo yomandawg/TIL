@@ -1,9 +1,8 @@
-# Algorithms
+# MST (Minimum Spanning Tree)
 
+> 최소 신장 트리
 
-## MST (Minimum Spanning Tree; 최소신장트리)
-
-### Prim Algorithm
+## Prim Algorithm
 * heapq 갱신
 * O(ElogV)
 ```python
@@ -22,7 +21,7 @@ def MST-Prim(G, w, r):
                 v.key = w(u, v)
 ```
 
-### Kruskal Algorithm
+## Kruskal Algorithm
 * union-find 및 rank 유지
 * O(ElogV)
 ```python
