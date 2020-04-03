@@ -17,12 +17,13 @@ def dijkstra(graph, root):
     previous = {vertex: None for vertex in graph.vertices} # the parent vertex of the current evaluating node
 
     while heapQ is not empty:
-        u = heapQ.heappop() 
-        for v in u.adjacentVertices:
+        u = heapQ.heappop() # logV
+        for v in u.adjacentVertices: # E
             temp = distance[v] + edge(u, v)
             if temp < distance[v]:
                 distance[v] = temp
                 previous[v] = u
+                heappush(heapQ, v) # V
     
     return distance, previous
 ```
