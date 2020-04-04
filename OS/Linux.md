@@ -40,3 +40,10 @@
 ## Server
 
 ### 보안설정
+* selinux
+* `su` (super user)
+
+
+## File System
+* **a** - 정적 라이브러리(최종파일안에 묻어짐 static)
+* **so** - 동적 라이브러리(프로그램실행후 필요할때 불려짐 similar to dll's)
