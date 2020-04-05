@@ -135,7 +135,7 @@ for(var index in arr) {
 
 ### Ajax
 > Asynchronous JavaScript & XML
-* 비동기로 가져온 result를 매개변수로 전달
+* 비동기로 가져온 result를 매개변수로 전달하는 객체
 * 전체 페이지를 새로고침하지 않고 일부만 로드하는 기법
   * JavaScript를 통해 client에서 server에 데이터 요청
 * htttp는 client에서 request를 보내고, server에서 response를 받으면 연결이 끊긴다
@@ -186,8 +186,8 @@ func.call(a)
 ## Prototype-Based Programming 
 > JavaScirpt의 OOP 개념의 핵심
 * 객체의 원형이 정의되어 있는 곳
-  * `Object1.prototype = new Object1()`을 통해 `Object1` 상속 가능
-  * `Object1.prototype.name = my객체`을 통해 property 설정 가능
+  * `Object2.prototype = new Object1()`을 통해 `Object1` 상속 가능
+  * `Object2.prototype.name = my객체`을 통해 property 설정 가능
   * `new` 키워드는 `prototype`이 가리키는 객체의 복사본을 불러오는 것
     * 복사본을 불러오지 않으면 자식 객체의 prototype을 수정했을 때 부모 객체의 prototype 또한 바뀜
 * prototype chaining 가능
