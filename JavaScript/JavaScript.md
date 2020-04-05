@@ -1,5 +1,23 @@
 # JavaScript Notes
 
+## Data Types
+### Primitive Data Type
+* `int`, `string`, `boolean`, `null`, `undefined`
+* 원시 데이터타입인데 *object access operator* (예: `string.length`)는 어떻게 사용?
+* **Wrapper 객체**
+  * 원시 데이터 타입을 객체처럼 사용하기 위해 감싸는 객체
+  * `Number`, `String`, `Boolean`
+  * `null`, `undefined`는 wrapper 객체 없음
+```javascript
+// at runtime
+var a = "asdf"
+=> var a = new String("asdf") // runtime에서 String wrapper객체 생성
+a.length // object access operator 사용 가능
+// 사용 완료 후 new String("asdf") 객체 제거 후 원시데이터로 변경
+```
+### Reference(Object) Data Type
+* `Object`
+
 ## First-class Citizen
 > 1급 시민
 * 변수(variable), 매개변수(parameter), 반환값(return value) 등으로 사용될 수 있는 데이터
@@ -103,12 +121,16 @@ for(var index in arr) {
 }
 ```
 
-
 ## Callback
+* 다른 코드의 인수로 넘겨주는 코드
+* 특정 이벤트 발생 후 매개뱐수로 전달한 함수가 다시 호출되는 것
+* 객체에게 시킨 일이 끝나길 기다리지 않고 'callback'할 때까지 다른 일을 시키는 것
+  * non-blocking asynchronous 방식*
+* first-class function (일급 함수)처럼 함수를 매개변수로 전달하거나 반환하는 JavaScript에서 사용
+  * Python의 *coroutine*과 유사
 
-
-## Async/Await
-> 비동기 처리
+### Async/Await
+* 비동기 처리
 * 기존 웹 처리에선 페이지 reload시 전체 리소스를 다시 불러와야 하는 비효율이 있었는데, 비동기식으로 필요한 부분만 불러옴
 
 ### Ajax
@@ -124,11 +146,7 @@ for(var index in arr) {
 * XMLHttpRequest Object &rarr; callback method &rarr; server response &rarr; HTML update
 
 
-
-## Prototype-Based Programming
-
-
-## this
+## 객체
 
 ### 전역객체
 * 최상위 객체, the universe
@@ -155,16 +173,17 @@ var list1 = []
 
 ### apply, call, bind
 * `apply`: JavaScript의 함수는 동등한 레벨의 객체이기 때문에 해당 함수의 this 객체를 지정함
+* `call`: without parameters
 ```javascript
 var a = {}
 function func() {}
-func.apply(a) // 함수의 소속을 a로 지정함
+func.apply(a, [1, 2]) // 함수의 소속을 a로 지정함 with array parameters
+func.call(a)
 ```
-* `call`
-* `bind`
+* `bind`: 함수의 `this`값을 영구적으로 바꿈
 
- 
-## prototype (원형)
+
+## Prototype-Based Programming 
 > JavaScirpt의 OOP 개념의 핵심
 * 객체의 원형이 정의되어 있는 곳
   * `Object1.prototype = new Object1()`을 통해 `Object1` 상속 가능
@@ -173,7 +192,6 @@ func.apply(a) // 함수의 소속을 a로 지정함
     * 복사본을 불러오지 않으면 자식 객체의 prototype을 수정했을 때 부모 객체의 prototype 또한 바뀜
 * prototype chaining 가능
 * 다중상속: 
-
 
 ### 표준 내장 객체 (Standard Built-in Object)
 > Object, Array, Function, String, Boolean, Number, Math, Date, RegExp
@@ -188,8 +206,18 @@ func.apply(a) // 함수의 소속을 a로 지정함
 * 모든 객체가 공통적으로 가지고 있는 property 추가 가능
 ```javascript
 // Object.keys = function() {} - Object 메서드 지정
-Object.keys() // index 정보 - Object 메서드로 사용
+Object.keys(a) // index 정보 - Object 메서드로 사용; 정적 활용 가능 (static)
 
 // Object.prototype.toString = function() {} - 객체 메서드 지정
 Array.toString() // string representation - 객체(new Array()) 메서드로 사용
+```
+* `Object` 객체에 method를 추가하면 접근 영역이 불명확해짐
+  * Object 객체의 최소단위의 분별이 명확하지 않기 떄문에
+```javascript
+Object.prototype.method = function func() {}
+var list = ['a', 'b', 'c']
+for (var name in list) {
+  console.log(list[i]) // returns 'a', 'b', 'c', method (prototype.method까지 iterate)
+}
+// object.hasOwnProperty(symbol) 을 통해 객체 생성시 직접 정의한 property만을 걸러낼 수 있다
 ```
