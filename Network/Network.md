@@ -9,7 +9,7 @@
 ## IP
 
 * 인터넷 망에 접속하기 위해, NIC 공인기관에서 할당하는 공인 IP를 사용해야 함
-* 사용자는 ISP 업체로부터 공인 주소를 임대받아 인터넷에 접속함
+* 사용자는 ISP(Internet Service Provider) 업체로부터 공인 주소를 임대받아 인터넷에 접속함
 
 > * IPv4 -IP 통신에 필요한 고유 주소
 >   * 2^32 == 32비트(8bit $\times$ 4) 10진수로 나타냄
@@ -18,7 +18,6 @@
 
 ```
 예약 IP
-
 0.0.0.0 ~ 0.255.255.255 (0.0.0.0/8, common: 0.0.0.0): 임시 IP
 10.0.0.0 ~ 10.255.255.255 (10.0.0.0/8): 사설 IP, A class network
 100.64.0.0 ~ 100.127.255.255 (100.64.0.0/10): IPv4 고갈 대비 추가 사설 IP
@@ -79,6 +78,7 @@ IP주소: 192.168.1.0
 
 * IP 라우터는 인터페이스 및 호스트에 IP 주소를 할당한다. 초창기엔 각 PC마다 고정 IP를 설정했는데, IP설정에 실수가 있는 경우 인터넷이 안되거나 동일한 IP를 할당하여 충돌이 나는 경우도 비일비재했다. 그 외에 사용하지 않는 호스트까지 IP를 할당하다보니 IP가 모자라는 문제도 있었다. 그래서 나온 것이 DHCP
 * 사용할 때만 IP를 할당하는 동적 설정 프로토콜
+  * MAC Address로 기록 및 확인
 * 라우터는 단지 게이트웨이 역할만 하고, DHCP 서버는 별도로 두는 구성도 있다
 
 * DHCP Server
@@ -154,24 +154,53 @@ show ntp status
 ntp server 0.0.0.0
 ```
 
+## WAN
+
+> Wide Area Network (인터넷)
+
+* public IP address
+  * 
+* 원거리 통신망
+* LAN과 LAN을 연결하는 네트워크; 넓은 범위에서 사용되는 네트워크
+
+&varr; 공유기(gateway(router) address like 192.168.0.1)
 
 ## LAN
 
 > Local Area Network
 
+* 사설IP: private IP addresss
 * 근거리 통신망
 * 특정한 범위 내에 독립된 네트워크를 구축한 것
   * LAN을 구축하면 LAN 외부에서는 LAN 내부에 접근할 수 없음
-* 규격: Ethernet, Wi-Fi
+* 규격: Ethernet(+Wi-Fi)
 
 
-## NAT
+### NAT
 
 > Network Address Translation
 
+* router에서 private IP address &harr; public IP address 바꾸는 과정(LAN(router) &harr; WAN(internet))
 * public outside address와 private inside address의 사이에서 border router로서 역할
 * 내부망에서는 사설 IP주소를 사용해 통신하고, 외부망 통신시 NAT을 거쳐 공인 IP 주소로 변환
 * 사설 네트워크에 속한 여러 개의 호스트가 하나의 공인 IP주소를 사용해 인터넷에 접속하기 위함
+
+
+## Port Forwarding
+
+* example) 59.6.66.238:8080 &rarr; 192.168.0.3:80 routing
+  * 외부 요청을 내부망의 특정 port로 forward할 수 있다
+* router 설정의 포트포워딩: 외부포트 &rarr; 내부포트 지정
+  * 서버 포트 ctrl 가능
+
+### PORT
+> 0 ~ 65535
+* 주요 예약 Port (well-known port: 0 ~ 1023)
+  * 22 - SSH
+  * 80, 8080 - http(web server listening)
+  * 443 - https
+  * 1023
+* URL format: `scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]`
 
 
 ## DMZ
