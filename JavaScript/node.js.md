@@ -1,5 +1,37 @@
 # Node.js
 
+
+## [PM2](https://pm2.keymetrics.io/)
+> a daemon process manager that helps managing and keeping the node.js application online 24/7
+* automatically restart the application when a file is modified
+
+### Commands
+```bash
+# start an app with pm2 (with options)
+pm2 start app.js
+pm2 start app.js --watch
+pm2 start app.js --watch --no-daemon
+pm2 start app.js --watch --ignore-watch="data/* sessions/*" --no-daemon
+
+# kill all pm2 processes
+pm2 kill
+
+# monitor all processes launched
+pm2 monit
+
+# list all processes
+pm2 list
+
+# manage a process
+pm2 stop
+pm2 restrat
+pm2 delete
+
+# view logs
+pm2 log
+```
+
+
 ## Promise
 > Notes from https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise\
 > 비동기 작업이 맞이할 미래의 완료 또는 실패와 그 결과 값을 표현하는 객체
@@ -19,10 +51,34 @@
 
 
 * `Promise.resolve(value)`
-  * Promise 연산 성공시 이행값 `value`와 함께 `Promise.then` Promise 객체 반환
+  * Promise 연산 성공시 이행값(`result`) resolve와 함께 `Promise.then` Promise 객체 반환
+  * `then`을 통한 resolve 처리
 
 * `Promise.reject(reason)`
-  * Promise 연산 실패시 `reason`과 함께 거부된 `Promise` 객체 반환
+  * Promise 연산 실패(`error`)시 `reason`과 함께 거부된 `Promise` 객체 반환
+  * `catch`를 통한 error 처리
+
+```javascript
+const oddNumber = function(a, b) {
+    return new Promise((resolve, reject) => {
+        if ((a + b) % 2) {
+            resolve("Odd Number", a + b);
+        } else {
+            reject("Even Number", a + b);
+        }
+    })
+}
+var x = oddNumber(1, 2)
+    .then(result => {
+        console.log(result)
+        return result
+    })
+    .catch(error => {
+        console.log(error)
+        return error
+    })
+console.log(x) // returns `<pending>` before fully processing the `Promise`
+```
 
 
 ## Ajax
