@@ -32,7 +32,8 @@ var connection = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "password",
-    database: "database_name"
+    database: "database_name",
+    // multipleStatements:true // 한 번의 transaction에 multiple SQL statements 허용 - vulnerable to SQL injection
 });
 
 connection.connect();
@@ -46,4 +47,22 @@ connection.query("SELECT 2 AS solution", function(error, reuslts, fields) {
 });
 
 connection.end();
+```
+
+### 보안
+```javascript
+// ``로 들어온 ?는 query() method에서 [] 인자로 검증된다 - SQL injection 방어
+// string ('')으로 인식시켜서 공격 방어
+db.query(`SELECT * FROM table_name WHERE id=?`, [?자리], function(error, result) {
+    if(error) {
+        throw error;
+    }
+    // Do something
+})
+
+// auto-escape(punctuate) on format strings of SQL
+db.query(`SELECT * FROM table_name WHERE id=${db.escape(queryData.id)}`, function(error, result) {
+    // Do something
+}
+})
 ```

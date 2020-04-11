@@ -5,6 +5,9 @@
 > a daemon process manager that helps managing and keeping the node.js application online 24/7
 * automatically restart the application when a file is modified
 
+## [nodemon](https://nodemon.io/)
+> a utility that monitors any changes in the source and automatically restart the server
+
 ### Commands
 ```bash
 # start an app with pm2 (with options)
@@ -85,7 +88,7 @@ console.log(x) // returns `<pending>` before fully processing the `Promise`
 > Asynchronus JavaScript & XML
 
 * 생산성 향상 - Single Page Application
-  * Resouce 재사용
+  * Resource 재사용
   * Resource 동적 load (DOM 변경)
   * 서버와 자유로운 통신 (`XMLHttpRequest`)
 
@@ -106,3 +109,8 @@ console.log(x) // returns `<pending>` before fully processing the `Promise`
 ## async function
 * `AsyncFunction` 객체를 반환하는 비동기 함수 형태
 * Event Loop을 통해 비동기적으로 작동하는 함수 &rarr; `Promise`로 결과를 반환함
+
+
+## Security
+* `db.escaple(something)`
+* `sanitizeHTML(something)`

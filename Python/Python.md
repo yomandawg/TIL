@@ -3,10 +3,7 @@
 > Python Notes
 
 
-
 ## Python Project Structrue
-
-
 
 
 ## `setup.py` vs `requirements.txt`

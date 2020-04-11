@@ -128,6 +128,29 @@ for(var index in arr) {
   * non-blocking asynchronous 방식*
 * first-class function (일급 함수)처럼 함수를 매개변수로 전달하거나 반환하는 JavaScript에서 사용
   * Python의 *coroutine*과 유사
+```javascript
+// Callback Hell
+function asyncFunction1(cb) {
+    setTimeout(function() {
+        console.log(1)
+        cb()
+    }, 100)
+}
+// ...
+function asyncFunction4() {
+    setTimeout(function() {
+        console.log(4)
+    }, 100)
+}
+
+asyncFunction1(function(result) {
+    asyncFunction2(function(result) {
+        asyncFunction3(function(result) {
+            asyncFunction4()
+        })
+    })
+})
+```
 
 ### Async/Await
 * 비동기 처리
