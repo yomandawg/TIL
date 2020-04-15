@@ -9,6 +9,7 @@
 
 * 인터넷 망에 접속하기 위해, NIC 공인기관에서 할당하는 공인 IP를 사용해야 함
 * 사용자는 ISP(Internet Service Provider) 업체로부터 공인 주소를 임대받아 인터넷에 접속함
+* localhost: `127.0.0.1`
 
 > * IPv4 -IP 통신에 필요한 고유 주소
 >   * 2^32 == 32비트(8bit $\times$ 4) 10진수로 나타냄
@@ -92,6 +93,8 @@ IP주소: 192.168.1.0
     * `ipconfig /renew`
   * 반환(Release)
     * `ipconfig /release`
+
+* public address(router) &rarr; private address
 
 
 ## Gateway
@@ -200,6 +203,7 @@ ntp server 0.0.0.0
   * 443 - https
   * 1023
 * URL format: `scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]`
+* port forwarding: routing of request at the gateway according to the connection port
 
 
 ## 가상환경

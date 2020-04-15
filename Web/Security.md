@@ -67,18 +67,40 @@ http.createServer((req, res) => {
 * `path` - 해당 url path 경로에 접근시에만 cookie 활성
 * `domain` - 해당 domain 경로 접근시에만 cookie 활성
 
-## Local Storage
+---
 
-## Indexed DB
+### Local Storage
 
-## Hash, Salt, Key Stretching
+### Indexed DB
+
+### Hash, Salt, Key Stretching
 * `PBKDF2`
 * `bcript`
 
 
-## SQL injection
+## 암호화
+* 대칭 vs 비대칭
+  * 대칭 - same key for encrypting and decrypting
+  * 비대칭 - private key(encrypting) &harr; public key(decrypting)
+
+### RSA
+> 비대칭 암호화
+* SSH example
+```bash
+Server `random key`-> Client
+
+Client uses `private key` to encrypt `random key`
+
+Client `encrypted key` -> Server
+
+Server uses `public key` to decrypt `encrypted key`
+
+if `encrypted key` == `random key`: pass
+```
+
+### SQL injection
 * example: `SELECT * FROM ${table_name};` &rarr; `SELECT * FROM table_name;DROP table_name;`
 * solve by escaping or stringifying the formatted area: `SELECT * FROM 'table_name;DROP table_name';`
 
 
-## XSS
+### XSS
