@@ -6,15 +6,21 @@
   1. 지원 가능 암호화 교환
   2. 인증 교환
   3. 대칭키 암호화(symmetric-key: 암호화, 복호화에 같은 키를 사용) 및 인증
-* SSL 인증서
+* SSL 인증서 (CA - certificate authority)
   * 클라이언트와 서버의 통신을 제3자가 보증해주는 전자 인증 문서
   * 서버.인증서 &harr; 클라이언트.인증서
-* 대칭키(symmetric) 방식
-* 공개키(public) 방식
+```bash
+d700 root root .
+300 root root ca.pem # root CA 인증서
+300 root root ssl.crt # 인증서 정보 + public key
+300 root root ssl.key  # 서버 private key
+300 root root sub.class1.server.ca.pem # root CA 중계자 체인
+```
 
 ## HTTPS
 > HTTP Over Secure Socket Layer
 * SSL 암호화로 HTTP 전송
+* 공개키(public key) handshake &rarr; 대칭키 session
 
 ## Cookie
 > Personalization of the Web\
@@ -80,11 +86,15 @@ http.createServer((req, res) => {
 
 ## 암호화
 * 대칭 vs 비대칭
-  * 대칭 - same key for encrypting and decrypting
-  * 비대칭 - private key(encrypting) &harr; public key(decrypting)
+  * 대칭(symmetric) - same key for encrypting and decrypting
+  * 비대칭(asymmetric) - private key(encrypting) &harr; public key(decrypting)
+
+### AES
+> 대칭 암호화
 
 ### RSA
-> 비대칭 암호화
+> 비대칭 암호화 using *modular* and *phi* function\
+> [real life example](https://www.youtube.com/watch?v=wXB-V_Keiu8)
 * SSH example
 ```bash
 Server `random key`-> Client

@@ -44,6 +44,7 @@
   * `sudo apt-get update` - update all the packages
   * `sudo apt-get install [package name]` - install a package
   * `sudo apt-get remove [package name]` or `sudo apt-get purge [package name]` - remove only the program or remove completely
+  * `/etc/apt/sources.list` - manage download server
 * **yum**
 
 ## File System
@@ -98,6 +99,12 @@ cat < temp.txt 1> result.txt 2> error.log
 * `curl ipinfo.io/ip` - view public ip
 * `ip addr` - view private ip
 
+* `&&` - execute if 1
+* `||` - execute if 0
+
+* `wget {address}` - get contents from web server
+* `tar [-xvfz] {filename}` - unzip
+
 ### File Properties
 `-rwxrwxrwx 1 username groupname 0 Apr 15 16:26 temp.txt`
 | type | access mode | links | owner | group | size | date | filename | 
@@ -128,6 +135,7 @@ echo 'do something'
 * `/root` - root directory (접근 permission need)
 * `/home/[user]` - user directory
 * `/etc/hosts` - host file
+* `/etc/apt/sources.list` - apt-get package server
 
 ### Daemon Programs
 * Always-running background programs
