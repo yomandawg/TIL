@@ -114,3 +114,32 @@ console.log(x) // returns `<pending>` before fully processing the `Promise`
 ## Security
 * `db.escaple(something)`
 * `sanitizeHTML(something)`
+
+
+## module
+> `.js` 확장자 캡슐화 단위
+```javascript
+// temp.js using `var exports`
+var exports = module.exports = {};
+
+exports.yoFunc = function() {
+  return "yo!";
+}
+export.yoyoFunc = function() {
+  return "yoman!";
+}
+```
+```javascript
+// temp.js using `module.exports`
+module.exports = {
+  yoFunc = function() {
+    return "yo!";
+  },
+  yoyoFunc = function() {
+    return "yoman!";
+  }
+}
+```
+```javascript
+var yo = require("temp.js");
+```
