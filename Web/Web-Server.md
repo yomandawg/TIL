@@ -63,3 +63,20 @@ deb-src https://nginx.org/packages/ubuntu/ $release nginx
 * configuration - `/etc/nginx/`
 
 ### settings
+
+---
+
+## Proxy
+* Anonymity
+* Caching
+* Blocking unwanted sites
+* Geo-fencing
+* vs. Virtual Private Network - 보안문제
+
+## Reverse Proxy
+* Load-balancing
+* Caching
+* Isolating internal traffic (DMZ)
+* Logging
+* Canary Deployment (Testing)
+  * 시범운영 테스트

@@ -41,3 +41,6 @@ app.get('/', (req, res, next) => {
     next(); // callback parameter for calling the next middleware
 })
 ```
+
+
+## [Express.js Backend with TypeScript, Swagger UI, and Docker Compose](https://itnext.io/express-js-backend-with-typescript-swagger-ui-and-docker-compose-f77143860bc8)

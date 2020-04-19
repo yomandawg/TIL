@@ -50,3 +50,8 @@ class Student2 implements Person {
     // ...    
 }
 ```
+
+
+### TSOA
+> TypeScript OpenAPI\
+> generate OpenAPI-compatible REST endpoints

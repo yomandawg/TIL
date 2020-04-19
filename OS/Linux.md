@@ -31,6 +31,19 @@
   * monetizatin, redistribution 가능
 
 
+## Windows Subsystem for Linux
+> native Linux 호환 Kernel Interface for Windows
+
+### Installation
+1. Register to [Windows Insider](https://insider.windows.com/en-us/register/) program
+2. Link an Microsoft Account with Windows Insider Program
+3. [Install WSL2](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install) - *Only available for Windows 10 x64*
+4. Turn Windows features on
+   1. Virtual Machine Platform
+   2. Windows Subsystem for Linux
+5. Install Linux distro from Store - Ubuntu
+
+
 ---
 
 
