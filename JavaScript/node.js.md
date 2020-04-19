@@ -143,3 +143,9 @@ module.exports = {
 ```javascript
 var yo = require("temp.js");
 ```
+
+### Module System
+> 모듈 생태계 규칙 - converted 
+* CommonJS == `require`
+* AMD(asynchronous module definition) == `define` - `require`
+* ES6 == `import`
