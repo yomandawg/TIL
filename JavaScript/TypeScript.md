@@ -52,6 +52,11 @@ class Student2 implements Person {
 ```
 
 
-### TSOA
+## TSOA
 > TypeScript OpenAPI\
 > generate OpenAPI-compatible REST endpoints
+
+### Swagger
+> API documentation and design tools ~= similar to Django REST Framework
+* `mkdir -p api && mkdir -p api/dist`
+* `npx tsoa swagger` - create a swagger mount with docker
