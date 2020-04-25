@@ -103,7 +103,8 @@ console.log(x) // returns `<pending>` before fully processing the `Promise`
 * 유물 브라우저에서도 `fetch`를 사용할 수 있게 해주는 API
 
 ### Axios
-* Promise based HTTP client for browser and node.js
+* Promise-based HTTP client that exposes the same API for both server(node.js) and client(browser)
+* For tasks shared between server and client but use different platforms, it's recommended to wrap the platform-specific implementations inside a universal API, which could be `axios`.
 
 
 ## async function
