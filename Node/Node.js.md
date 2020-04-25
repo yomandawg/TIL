@@ -1,6 +1,5 @@
 # Node.js
 
-
 ## [PM2](https://pm2.keymetrics.io/)
 > a daemon process manager that helps managing and keeping the node.js application online 24/7
 * automatically restart the application when a file is modified
