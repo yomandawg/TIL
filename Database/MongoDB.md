@@ -29,8 +29,7 @@
 
 
 
-## 장점
-
+### 장점
 * *Availability, Faster Development, Scalablity*
 * 막 쌓기에 적합 (log data, session)
 * Flexibility: 스키마가 없기 때문에 아무렇게나 저장 가능함
@@ -39,11 +38,28 @@
 * Conversion/Mapping: BJON 형태로 저장하여 직관적이고 편리함
 * data의 일관성이 중요하지 않고 join을 embed로 할 수 있는 경우 장점 극대화
 
-## 단점
-
+### 단점
 * 정합성이 떨어지므로 transaction이 많을 경우 부적절함
 * JOIN의 부재
 * 메모리를 OS가 관리함 - 메모리 사이즈의 영향이 크다
 * 속도를 얻은 대신 일정 부분 ACID를 포기했다
   * ACID - Atomicity, Consistency, Isolation, Durability
 * 은행 데이터처럼 정합성이 중요한 경우 사용 불가능
+
+
+## [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+> cloud MongoDB service
+* able to deploy full managed MongoDB across various cloud platform services
+
+### Express.js App Architecture
+1. `View` &larr; `Express.js App` &larr; `Mongoose API` &harr; `MongoDB`
+2. `View` &larr; `Express.js App` &larr; `Mongoose API` &harr; `Cache Server` &harr; `MongoDB`
+
+## Cache Server
+
+### Cache Server
+* Caching layer
+* No need for additional indices
+  1. Check if query has been executed before
+  2. Store query + result
+* collection of the query and `key: value` pair

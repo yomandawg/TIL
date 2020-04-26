@@ -41,6 +41,10 @@ SSLCACertificateFile {custom directory}/ca.pem # root CA 인증서
 * shell환경에서 web browser 사용
 * `elinks [address]`
 
+### ApacheBench
+> measure performance of HTTP web servers
+* `ab -n <number of total requests> -c <number of concurrent requests> <URL>`
+
 
 ## IIS
 > Internet Information Service

@@ -1,4 +1,4 @@
-# Information Security
+# Network Security
 
 
 ## DMZ

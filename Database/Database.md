@@ -29,3 +29,15 @@
 * 트랜잭션 설계
 * 저장 구조 및 장치 정의
 * 접근 방법 정의
+
+
+### Index
+* 단점
+```
+A column에 index가 걸려 있을 경우
+A column에 B 값을 insert
+1. index가 없다면 테이블 -> A column으로 바로 B가 insert
+2. index가 있다면 테이블에 insert 되기 전 index에 먼저 B가 insert
+ 2-1. index 정렬
+ 2-2. 테이블에 B insert
+```

@@ -74,3 +74,26 @@ worker.onmessage = function (message) {
 }
 worker.postMessage();
 ```
+
+
+## Web Application
+
+### Architecture
+1. `View` &larr; `Express.js App` &larr; `Mongoose API` &harr; `MongoDB`
+2. `View` &larr; `Express.js App` &larr; `Mongoose API` &harr; `Cache Server` &harr; `MongoDB`
+
+### Cache Server
+* Caching layer
+* No need for additional indices
+  1. Check if query has been executed before
+  2. Store query + result
+* collection of the query and `key: value` pair
+
+### Redis
+* `npm install redis`
+* tiny database that runs in the **memory** of local machine
+* fast read & write
+* all the data is deleted(**memory**) when the system is turned off
+* useful for caching layer
+
+* `Mongoose` &rarr; `node-redis` &harr; `redis server`
