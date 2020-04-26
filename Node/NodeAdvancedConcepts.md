@@ -2,10 +2,10 @@
 
 ## Node Architecture
 | Javascript Code |
-|:-:|
-| Node.js |
-| V8 |
-| libuv |
+| :-------------: |
+|     Node.js     |
+|       V8        |
+|      libuv      |
 
 ### Event Loop
 * Node Event Loop &rarr; Single Threaded\
@@ -29,16 +29,48 @@
 const app = http.createServer((req, res) => {
   // do something
 }
-app.listen(...); // the tasks goes into pendingOSTasks which will continuously loads the shouldContinue of the Event Loop
+// the tasks goes into pendingOSTasks which will continuously loads the shouldContinue of the Event Loop
+app.listen(...);
 ```
 
 
 ## Node Performance
+> benchmark by ApacheBench - `ab -c <concurrent connections> -n <number of requests> url:port`
+* Previous request to the Node server may be blocking the following request
+* Need a solution to mitigate such problem
+* Performance boost is limited by the CPU power, obviously.
 
 ### Cluster mode
 * create multiple instances of node to 'multi-thread'
+* **PM2** - monitor the 'health' of the multiple instances within an application
+* `node index.js` &rarr; `cluster.fork()` &rarr; `index.js` &rarr; `worker instance` - control with `cluster.isMaster`
+  * 최적화(handling number of `cluster.fork()` slaves) 필요 with CPU performance (`logical cores`)
+  * logical cores = physical cores * number of threads that can run on each cores
+* manage with PM2 (number of clusters == number of logical acores)
+  * `pm2 start -i 0 <node.js file>`
 
 
-### Worker Thread
+### Worker Thread (experimental stage)
 * use the thread-pool set up by `libuv`
-  * *experimental*
+* utilize `webworker-threads`
+```javascript
+// example
+// use the `function` semeantics on purpose, not arrow function
+// to route `this` keyword to the nested function object
+const worker = new Worker(function() {
+// delegate to outside of Node.js process and into the worker threads
+this.onmessage = function() {
+    let counter = 0;
+    while (counter < 1e9) {
+      counter++;
+    }
+    postMessage(counter); // Worker communication interface
+  }
+});
+
+// Worker communication interface
+worker.onmessage = function (message) {
+  console.log(message.data); // returned callback
+}
+worker.postMessage();
+```
