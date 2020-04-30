@@ -245,3 +245,29 @@ for (var name in list) {
 }
 // object.hasOwnProperty(symbol) 을 통해 객체 생성시 직접 정의한 property만을 걸러낼 수 있다
 ```
+
+
+## Promise
+
+* 발췌 from [Google Dev Blog](https://developers.google.com/web/fundamentals/primers/promises)
+
+시퀀스 만들기
+chapterUrls 배열을 프라미스 시퀀스로 바꾸려고 합니다. then()을 사용하여 이를 수행할 수 있습니다.
+
+```javascript
+// Start off with a promise that always resolves
+var sequence = Promise.resolve();
+
+// Loop through our chapter urls
+story.chapterUrls.forEach(function(chapterUrl) {
+  // Add these actions to the end of the sequence
+  sequence = sequence.then(function() {
+    return getJSON(chapterUrl);
+  }).then(function(chapter) {
+    addHtmlToPage(chapter.html);
+  });
+})
+```
+
+여기서는 처음으로 소개한 Promise.resolve()는 주어진 값이 무엇이든지 상관없이 분석하는 프라미스를 만듭니다. Promise 인스턴스에 이를 전달하면 이를 반환합니다(참고: 이는 일부 구현이 아직 준수하지 않는 사양에 대한 변경임). 프라미스와 유사(then() 메서드가 있음)한 것을 전달하면 동일한 방식으로 처리/거부하는 진짜 Promise가 생성됩니다. Promise.resolve('Hello') 등의 다른 값을 전달하면 해당 값을 사용하여 처리하는 프라미스가 생성됩니다. 위와 같이 어떤 값도 제공하지 않고 호출하면 'undefined'를 사용하여 처리합니다.
+
