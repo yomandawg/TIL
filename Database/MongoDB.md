@@ -63,3 +63,6 @@
   1. Check if query has been executed before
   2. Store query + result
 * collection of the query and `key: value` pair
+
+
+## [Mongoose ODM](https://mongoosejs.com/docs/index.html)

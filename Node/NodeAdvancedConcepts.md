@@ -49,6 +49,31 @@ app.listen(...);
 * manage with PM2 (number of clusters == number of logical acores)
   * `pm2 start -i 0 <node.js file>`
 
+#### Clustering Workflow
+> Master & Slave\
+1. RUN `node index.js`
+2. `node.js` instance is created
+   1. the first instance ran automatically creates the **cluster manager**
+   2. the **cluster manager** handles **worker instances**
+   3. **worker instance** is responsible for processing incoming requests
+3. **cluster manager**(*master*) utilize the node.js standard library module `cluster`
+   1. whenever `cluster.fork()` is called, node.js internally goes back to `index.js` and executes it the second time
+   2. this time though, it is produced with a new **worker instance**(*slave*)
+```javascript
+const cluster = require('cluster');
+
+cluster.isMaster // checks if the instance is a cluster manager
+
+// Is the file being executed in master mode?
+if (cluster.isMaster) {
+  // Cause index.js to be executed again but in slave mode
+  cluster.fork(); // child - every child make use of its own thread pool
+  cluster.fork(); // child - every child make use of its own thread pool
+  ... // multiple forks -> computational power goes up!
+} else {
+  // Child instance - do routine and nothing else
+}
+```
 
 ### Worker Thread (experimental stage)
 * node 10.5+부터 내장된 method

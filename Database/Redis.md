@@ -44,7 +44,7 @@ hget(key1, key2, (err, val) => {
   // do something
 })
 
-// reset redis
+// reset redis client memory
 client.flushall()
 ```
 * object needs to be first converted into JSON format string and parse when `get`ting the data back
@@ -60,4 +60,4 @@ client.get = util.promisify(client.get); // repalce the original client.get with
 
 // const cachedBlog = client.get(req.user.id, () => {});
 const cachedBlog = await client.get(req.user.id); // handle async-awaits
-```
+``` 
