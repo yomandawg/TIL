@@ -1,7 +1,5 @@
 # ES6
 
-
-
 ## Arrow Function
 * Parameters
 ```javascript
@@ -35,4 +33,77 @@ let foo = {
     }
 }
 foo.yo(); // 1000ms 후 "yo"
+```
+
+
+## rest parameter
+* Used for spreading out objects or copying them
+```javascript
+const rest = (...nums) => {
+  console.log(nums);
+  return nums.map(num => num * 2)
+}
+const result = rest(1, 2, 3, 4, 5); // [1, 2, 3, 4, 5]
+console.log(result); // [2, 4, 6, 8, 10]
+```
+```javascript
+// spread syntax (arrays)
+const myArr = ['a', 'b', 'c'] // a b c
+console.log(...myArr); // a b c
+const myArr_ = [...myArr, 'd', 'e'] // ['a', 'b', 'c', 'd', 'e']
+```
+```javascript
+// spread syntax (objects)
+const myObj = { name: 'yo', age: 29, job: 'swe'};
+const myObjClone = {...myObj}; // clone of myObj
+const myObjClone_ = {...myObj, location: 'seoul'};
+```
+
+
+## Set (data structure)
+* Allow no duplicate values
+```javascript
+let myArr = ['a', 'a', 'b', 'b', 'c', 'c'];
+const mySet = new Set(myArr);
+console.log(mySet); // Set { 'a' , 'b', 'c' }
+
+myArr = [...mySet]; // ['a', 'b', 'c']
+myArr = [...new Set(myArr)]; // simpler way
+```
+```javascript
+const mySet = new Set();
+mySet.add(20).add(20).add(25); // Set { 20, 25 }
+mySet.delete(25); // Set { 20 }
+
+console.log(mySet.size); // 1
+console.log(mySet.has(20), mySet.has(25)); // true false
+
+mySet.clear(); // clear the set
+```
+
+
+## Symbol
+* a premitive object type that's completely unique
+* no symbols can be equal to each other
+```javascript
+// not creating an object; `Symbol` is a primitive type
+const symbolOne = Symbol('yo');
+const symbolTwo = Symbol('yo');
+
+console.log(symbolOne, symbolTwo); // Symbol() Symbol()
+console.log(typeof symbolOne); // symbol
+console.log(symbolOne == symbolTwo, symbolOne === symbolTwo) // false false
+```
+```javascript
+const ninja = {}
+ninja['belt'] = 'orange';
+ninja['belt'] = 'black'; // overwrite
+console.log(ninja); // { belt: 'black' }
+
+// used for setting unique object keys
+const myObj = {}
+myObj[Symbol('yo')] = 'ray';
+myObj[Symbol('yo')] = 'kim';
+
+console.log(myObj) // { [Symbol(yo)]: 'ray', [Symbol(yo)]: 'kim' }
 ```

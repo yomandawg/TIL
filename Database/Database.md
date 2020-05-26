@@ -41,3 +41,10 @@ A column에 B 값을 insert
  2-1. index 정렬
  2-2. 테이블에 B insert
 ```
+
+
+## SQL vs NoSQL
+* **SQL**
+  * Tables, Rows, Columns
+* **NoSQL**
+  * Collections, Documents, Properties

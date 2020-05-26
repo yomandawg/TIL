@@ -32,3 +32,65 @@ exports const config = {
   messagingSenderId: ''
 }
 ```
+
+---
+
+# Modern Javascript
+
+## NoSQL Databases
+```javascript
+// Database Instance
+Blogs -> Blogs Collection {
+  document(xgdfer) -> Document {
+    title: 'yo',
+    likes: 50,
+    author: 'man'
+  }
+  document(fjdfghi) -> Document {
+    ...
+  }
+  ...
+}
+Comments
+Users
+...
+```
+
+## Firebase
+* `document` ≈ `object`
+* `field` & `value` ≈ `key` & `value`
+
+### Sturctures
+```javascript
+const db = firebase.firestore();
+
+// real-time listener `onSnapshot`
+const unsub = db.collection('chats').onSnapshot(snapshot => {
+  snapshot.docChanges().forEach((change => {
+    if(change.type === 'added') {
+      // do something
+    } else if(change.type === 'removed') {
+      // do something
+    }
+  }));
+});
+
+// cancel listening to the snapshot changes when invoked as a function
+unsub(); // unscribe from database changes
+```
+
+### Queries
+```javascript
+// Timestamp format
+firebase.firestore.Timestamp.fromDate(new Date());
+data.created_at.toDate();
+
+// get all
+db.collection('data').get();
+// delete
+db.collection('data').doc(id).delete();
+// where
+db.collection('data').where('field', '==', value);
+// order by
+db.collection('data').orderBy('field'); // need an index setting
+```
