@@ -169,6 +169,7 @@ module.exports = {
 
 ## Loaders
 > tasks for webpack\
+
 ### Babel
 * `npm install babel-loader --save-dev`
 ```javascript
@@ -185,6 +186,26 @@ module.exports = {
         }
       }
     }]
+  }
+};
+```
+
+### CSS
+* `npm install css-loader style-loader --save-dev`
+  * `css-loader` - webpack collects CSS's
+  * `style-loader` - take that CSS and add it to the HTML page `<style>...</style>`
+```javascript
+// @webpack.config.js
+module.exports = {
+  ...
+  module: {
+    rules: [
+      ...
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }
+    ]
   }
 };
 ```
