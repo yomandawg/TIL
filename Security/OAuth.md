@@ -22,3 +22,13 @@
 * 최소한의 기능(scope)만 인증받아 효율적으로 *Resource Server* 사용
 * Authorization Code + Client정보를 *Resource Server*에게 전송
 * **accessToken**을 보고 *Resource Owner*(User)에게 API 기능 제공
+
+---
+
+## History
+* 90's &rarr; 1 account, 1 password
+* 00's &rarr; dozen account, 1 harder password &rarr; minor security breach
+* 10's &rarr; many account, many password &rarr; major security breach
+* *Solution*: access delegation from trusted companies
+  * Google, Facebook, Microsoft, Amazon, Github, etc.
+  * Give access to the accounts to the third-party applcations

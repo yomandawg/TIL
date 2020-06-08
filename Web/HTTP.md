@@ -9,6 +9,11 @@
 ## HTTP Message
 ### Methods
 ### Status Code
+| code | msg |
+|:----:|:---:|
+| 200  | OK |
+| 401  | Unauthorized |
+
 ### Header
 
 ## Connection MGMT

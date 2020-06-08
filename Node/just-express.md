@@ -177,6 +177,9 @@ app.get('/admin', (req, res) => {
 // since `app.use` is the superset of `app.get`
 app.use('/admin', validateUser) // solves it all
 app.get('/admin', validateUser) // calls the middleware the GET methods
+
+// can pass multiple middlewares
+app.use('/multiple', middleware1, middleware2);
 ```
 
 ## Middleware
@@ -251,6 +254,15 @@ app.get('/', (req, res, next) =. {
   // @template view, the `locals` object is passed by default
 })
 ```
+* use `locals` to set global variables
+```javascript
+const globalVariable = 123
+app.use((req, res, next) => {
+  res.locals.globalVariable = globalVariable
+  next();
+})
+```
+
 * the view engine has access to `res.locals`
 ```ejs
 <%= msg1 %>
@@ -268,7 +280,14 @@ app.get('/', (req, res, next) =. {
 <%- include('head') %>
 <%- include('footer') %>
 
+<!-- depracated version -->
+<% include head %>
+<% include footer %>
+
 <!-- actual body here -->
+<% parsedData.forEach(data => { %>
+  <%= data %>
+<% }) %>
 ```
 
 ### Cookie
@@ -309,6 +328,7 @@ app.get('/logout', (req, res, next) => {
 
 ### Query String
 ```javascript
+// url/temp?msg=fail
 app.use((req, res, next) => {
   if (req.query.msg === 'fail') {
     res.locals.msg = 'Sorry, this username and password combination does not exist'
@@ -405,4 +425,63 @@ router.get('/', (req, res, next) => {
 })
 
 module.exports = router
+```
+
+
+
+## Real Examples
+
+#### Locals
+```javascript
+router.use((req, res, next) => {
+  // using `locals` for global values
+  res.locals.imageBaseUrl = imageBaseUrl;
+  next();
+})
+```
+
+#### Wildcard
+```javascript
+router.get('/movie/:id', (req, res, next) => {
+  // res.json(req.params.id) // `params` stores the wildcard parameter
+  const movieId = req.params.id;
+  // require('request')
+  request.get(/* some url using movieId */, (err, response, movieData) => {
+    const parsedData = JSON.parse(movieData);
+    res.render('renderedCustomPage', {
+      parsedData // object shortened notation
+    })
+  });
+});
+```
+
+#### req.body
+```html
+<form action="/search" method="post">
+  <select name="cat"> // sends `req.body.cat`
+    <option value="movie">Movie</option>
+    <option value="person">Actor</option>
+  </select>
+  <input type="text" name="movieSearch"/> // sends `req.body.movieSearch`
+  <input type="submit"/>
+</form>
+```
+```javascript
+router.post('/search', (req, res, next) => {
+  const userSearchTerm = encodeURI(req.body.movieSearch); // sanitize the URI
+  const cat = req.body.cat; // receive body variables
+});
+```
+
+#### Authentication
+```javascript
+// use middleware function to filter out unauthorized connections
+app.use((req, res, next) => {
+  if(req.query.api_key != 123456789) {
+    res.status(401); // Unauthorized = 401
+    res.json('Invalid API Key');
+  } else {
+    next();
+  }
+});
 ```

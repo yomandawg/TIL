@@ -37,3 +37,18 @@ story.chapterUrls.reduce(function(sequence, chapterUrl) {
   });
 }, Promise.resolve());
 ```
+
+
+## encodeURI
+* encodes a *URI* by replacing each characters by UTF-8 encodings
+```javascript
+const encoded = encodeURI('https://mozilla.org/?x=шеллы');
+// expected output: "https://mozilla.org/?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B"
+
+try {
+  console.log(decodeURI(encoded));
+  // expected output: "https://mozilla.org/?x=шеллы"
+} catch (e) { // catches a malformed URI
+  console.error(e);
+}
+```
