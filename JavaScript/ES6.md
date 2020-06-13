@@ -107,3 +107,36 @@ myObj[Symbol('yo')] = 'kim';
 
 console.log(myObj) // { [Symbol(yo)]: 'ray', [Symbol(yo)]: 'kim' }
 ```
+
+
+## Object Destructing
+```javascript
+const product = {
+    label: 'Notebook',
+    price: 3,
+    stock: 201,
+}
+
+const {label, stock, rating} = product
+console.log(label, stock, rating) // Notebook 201 undefined
+
+const {label:productLabel} = product
+console.log(label) // error
+console.log(productLabel) // Notebook
+
+// default value
+const {price=1, yo=5} = product
+console.log(price, yo) // 3 5
+```
+```javascript
+// object inputs
+const transaction = (type, {label, stock}) => {
+    console.log(type, label, stock)
+}
+transaction('order', product) // order Notebook 201
+
+// default object
+const transaction = ({arg1, arg2} = {}) => {
+    // do something
+}
+```

@@ -120,28 +120,20 @@ console.log(x) // returns `<pending>` before fully processing the `Promise`
 > `.js` 확장자 캡슐화 단위
 ```javascript
 // temp.js using `var exports`
-var exports = module.exports = {};
+var exports = module.exports = {
+  yo: function() {
+    return "yo!";
+  }
+};
 
 exports.yoFunc = function() {
-  return "yo!";
+  return "yoFunc!";
 }
-export.yoyoFunc = function() {
-  return "yoman!";
-}
-```
-```javascript
-// temp.js using `module.exports`
-module.exports = {
-  yoFunc = function() {
-    return "yo!";
-  },
-  yoyoFunc = function() {
-    return "yoman!";
-  }
-}
-```
-```javascript
-var yo = require("temp.js");
+
+/* require */
+var yo = require('./temp');
+yo.yo(); // yo!
+yo.yoFunc(); // yoFunc!
 ```
 
 ### Module System
@@ -150,7 +142,61 @@ var yo = require("temp.js");
 * AMD(asynchronous module definition) == `define` - `require`
 * ES6 == `import`
 
+---
 
-## Template Engines
-### Jade
-* Vue.js
+## Useful Modules
+#### chalk
+```javascript
+const chalk = require('chalk')
+const greenMsg = chalk.inverse.green.bold('success')
+```
+#### validator
+#### nodemon
+#### yargs
+```javascript
+const yargs = require('yargs')
+
+yargs.version('1.1.0')
+
+yargs.command({
+  command: 'add',
+  describe: 'add a new note',
+  builder: {
+    title: {
+      describe: 'Note title',
+      demandOption: true,
+      type: 'string'
+    },
+    body: {
+      describe: 'Note body',
+      demandOption: true,
+      type: 'string'
+    }
+  },
+  handler: function(argv) {
+    console.log('Title: ' + argv.title)
+    console.log('Body: ' + argv.body);
+  }
+})
+
+yargs.parse()
+```
+#### postman-request
+```javascript
+// raw request with `https` module
+const https = require('https')
+
+const request = https.request(url, (response) => {
+  let data = ''
+  response.on('data', (res) => {
+    // do something
+  })
+  response.on('end', (res) => {
+    // do something
+  })
+})
+request.on('error', (err) => {
+  // do something
+})
+request.end()
+```

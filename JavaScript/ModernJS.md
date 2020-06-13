@@ -151,6 +151,36 @@ x|y : x or y exists
 
 
 ## Promise
+```javascript
+// callback example
+const myCallback = (callback) => {
+  setTimeout(() => {
+    // callback('This is my error!')
+    callback(undefined, [1, 4, 7])
+  }, 2000)
+}
+
+myCallback((error, result) => {
+  if (error) {
+    return console.log(error)
+  }
+  console.log(result)
+})
+
+// same code with `Promise`
+const myPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    // reject('Things went wrong!')
+    resolve([7, 4, 1])
+  }, 2000)
+})
+
+myPromise.then((result) => {
+  console.log('Success!', result)
+}).catch((error) => {
+  console.log('Error!', error)
+})
+```
 * `resolve(data)`, `reject(err)`
 * `.then(data => {}, err => {})`
 * `.then(data => {}).catch(err => {})`

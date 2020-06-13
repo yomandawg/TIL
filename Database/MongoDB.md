@@ -66,3 +66,122 @@
 
 
 ## [Mongoose ODM](https://mongoosejs.com/docs/index.html)
+
+---
+
+# node.js
+> npm install mongodb\
+* with `express.js`
+```javascript
+const express = require('express');
+const app = expresss();
+
+const mongodb = require('mongodb');
+const mongoClient = mongodb.MongoClient;
+const mongoUrl = 'mongo://localhost:27017'
+
+mongoClient.connect(mongoUrl, (error, databaseConn) => {
+  const db = databaseConn.db('electricOrNOt');
+});
+
+app.get('/', (req, res) => {
+  db.collection('cars')
+    .find({imgSrc: 'tesla.jpg'})
+    .toArray((queryError, carsResult) => {
+      res.json(carsResults);
+    });
+})
+```
+
+---
+
+## Usage
+```javascript
+const mongodb = require('mongodb')
+const MongoClient = mongodb.MongoClient
+const connectionURL = 'mongodb://127.0.0.1:27017' // mongodb protocol
+const databaseName = 'task-manager' // create a database if non-exist
+
+MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
+  if(error) {
+    // do something
+  }
+
+  const db = client.db(databaseName)
+  // create new collection if non-exist
+  db.collection('users').insertOne({
+    _id: /* customizable or default */
+    name: 'Yoman',
+    age: 10
+  }, (error, result) => {
+    // do something
+    // result.ops
+  }))
+
+  db.collection('users').findOne({ 
+    _id: new ObjectID("5ee4a1bd810f9e3734d89168"), // wrap it around the `ObjectID` class
+    name: 'Jen',
+    age: 1 
+    }, (error, user) => {
+    // do something
+  })
+
+  // find returns a cursor to manually handle returned value
+  const findValues = db.collection('users').find({
+    age: 27
+  })
+  findValues.toArray((error, users) => {
+    // do something
+  })
+
+  // updates handled by `Promise`s
+  db.collection('users').updateOne({
+    // search criteria
+    _id: new ObjectID("5ee484927c74370b5802a2d7")
+  }, {
+    // update operators
+    $set: {
+      name: 'Mike'
+    },
+    $inc: { // increment
+      age: 1
+    }
+  }).then((result) => {
+    // do something
+  }).catch((error) => {
+    // do something
+  })
+
+  db.collection('users').deleteMany({
+    // search criteria
+    age: 27
+  }).then(res => {
+    // do something
+  }).catch(err => {
+    // do something
+  })
+})
+```
+#### GUID
+> global unique identifiers\
+* ability to scale well in distributed system (non-incremental)
+* can handle heavy traffic without collision of id's
+```javascript
+// object destructuring
+const { MongoClient, ObjectID } = require('mongodb')
+// const MongoClient = mongodb.MongoClient
+// const ObjectID = mongodb.ObjectID
+const id = new ObjectID() // new keyword creates a new `{}` upon the `constructor` function and binds `this` to it.
+
+const id = new ObjectID("5ee4a1bd810f9e3734d89168")
+id.toHexString() // stringify
+```
+
+## Robo 3T
+```bash
+${MONGO PATH}/bin/mongod.exe --dbpath=${DB PATH}
+```
+
+## Connection Pool
+* More connections opened behind the scenes
+* "lend" already made connections to clients when requested, return them back to the *connection pool* after use

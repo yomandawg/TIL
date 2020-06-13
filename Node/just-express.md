@@ -485,3 +485,18 @@ app.use((req, res, next) => {
   }
 });
 ```
+
+
+#### Multer
+> npm install --save multer
+
+* middleware for handling `multipart/form-data` (uploading files)
+* written on top of `busboy`
+
+* form(*post* method) `enctype="multipart/form-data"`
+```html
+<form action="/profile" method="post" enctype="multipart/form-data">
+  <input type="file" name="avatar" />
+</form>
+```
+* type attribute set to 'file'
