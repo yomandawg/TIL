@@ -52,3 +52,40 @@ try {
   console.error(e);
 }
 ```
+
+
+## call vs. apply
+* the difference is that `apply` invokes the function with *arguments* as an `array`, while `call` requires the parameters be listed explicitly.
+* A userful mnemonic is "**A** for **A**rray and **C** for **C**omma."
+```javascript
+myFunc.apply(/* binds `this` */, ['yo', 'man'])
+myFunc.call(/* binds `this` */, 'yo', 'man')
+myFunc.call(/* binds `this` */, ...['yo', 'man']) // ES6 spreads
+```
+
+## new vs. Object.create()
+> javascript inheritance\
+### new
+1. creates a new empty object `{}`
+2. binds the value of `this` to the new empty object
+3. calls the `constructor` function to 'build' the object
+### Object.create
+1. create a new object
+2. set the prototype of the newly created object to the original object
+3. binds `this` to it
+```javascript
+const animal = {
+  eat: "Nom"
+}
+const dog = Object.create(animal)
+dog.isPrototypeOf(animal) // true
+dog.eatFood = 'NomNom'
+dog // { eatFood: "NomNom" }
+dog.eat // Nom
+
+// Problem with prototypal inheritance
+const cat = Object.create(animal)
+cat.eat = 'MeowMeow'
+dog.eat // MeowMeow
+// prototype is overall shared with all inherited objects
+```

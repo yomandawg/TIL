@@ -115,7 +115,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     age: 10
   }, (error, result) => {
     // do something
-    // result.ops
+    // `result.ops` for raw result response
   }))
 
   db.collection('users').findOne({ 
