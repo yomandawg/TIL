@@ -89,3 +89,25 @@ cat.eat = 'MeowMeow'
 dog.eat // MeowMeow
 // prototype is overall shared with all inherited objects
 ```
+
+## JSON.stringify & toJSON
+* changing `toJSON` method on an object can tune `JSON.stringify` behavior
+```javascript
+const pet = {
+  name: 'yo'
+}
+
+pet.toJSON = function() {
+  return {}
+}
+console.log(JSON.stringify(pet)) // {}
+
+pet.toJSON = function() {
+  console.log('print this on calling stringify')
+  return this
+}
+console.log(JSON.stringify(pet))
+// print this on calling stringify
+// { "name": "yo" }
+
+```

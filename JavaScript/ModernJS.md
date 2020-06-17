@@ -261,7 +261,7 @@ getTodos()
 ```
 
 
-## Common Featurs
+## Common Features
 
 ### Object Shorthand Notation
 ```javascript

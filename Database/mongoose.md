@@ -61,3 +61,36 @@ const User = mongoose.model('User', {
   ...
 })
 ```
+
+### Schema
+#### Middleware
+```javascript
+const userSchema = new mongoose.Schema({
+  // schema
+})
+
+userSchema.pre(/* name of the event */, /* async (next) => {} */)
+userSchema.post(/* name of the event */, /* async (next) => {} */)
+```
+#### statics (model methods)
+* accessible on **model**s
+```javascript
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email })
+  if(!user) {
+    throw new Error('Unable to login.')
+  }
+  const isMatch = await bcrypt.compare(password, user.password)
+  if(!isMatch) {
+    throw new Error('Unable to login.')
+  } 
+  return user
+}
+
+const user = await User.findByCredentials(req.body.email, req.body.password)
+```
+#### methods (instance methods)
+* accessible on **instance**s
+```javascript
+
+```

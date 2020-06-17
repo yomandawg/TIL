@@ -200,3 +200,86 @@ request.on('error', (err) => {
 })
 request.end()
 ```
+#### bcryptjs(pure javascript) & bcrypt(C++)
+```javascript
+const bcrypt = require('bcryptjs')
+
+const myFunction = async () => {
+  const password = 'asdf1234!'
+  // password hashing
+  const hashedPassword = await bcrypt.hash(password, /* how many rounds of hashing */ 8)
+
+  // password matching
+  const isMatch = await bcrypt.compare(password, hashedPassword)
+}
+```
+#### jsonwebtoken
+```javascript
+const jwt = require('jsonwebtoken')
+const myFunc = async () => {
+  const token = jwt.sign({ 
+    _id: 'abc123', /* payload */
+  }, 'thisismynewcourse' /* verification secret sign */, {
+    expiresIn: '7 days' /* options */,
+  })
+
+  const data = jwt.verify(token, 'thisismynewcourse')
+}
+```
+* access by headers (e.g. Postman)
+  - key: `Authorization`
+  - value: `Bearer ${token}`
+```javascript
+// middleware example
+const auth = async (req, res, next) => {
+  try {
+    const token = req.header('Authorization').replace('Bearer ', '')
+    const decoded = jwt.verify(token, 'thisismynewcourse')
+    const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
+    
+    if(!user) {
+      throw new Error()
+    }
+
+    req.user = user
+    
+    next()
+  } catch(e) {
+    res.status(401).send({ error: 'Please authenticate.' })
+  }
+}
+```
+#### multer
+* `form-data`, `key`
+```javascript
+const multer = require('multer')
+
+const upload = multer({
+  dest: 'uploads', // destination folder
+  limits: {
+    fileSize: 1000000 // 1MB
+  },
+  fileFilter(req, file, cb) {
+    // endsWith
+    if(!file.originalname.endsWith('.pdf')) {
+      return cb(new Error('Pleaes upload a PDF'))
+    }
+    
+    // match regex
+    if(!file.originalname.match(/\.(doc|docx)$/)) {
+      return cb(new Error('Please a upload a word document'))
+    }
+
+    // passed
+    cb(undefined, true)
+
+    // cb(new Error('File must be a PDF')) // error callback
+    // cb(undefined, true) // expected upload
+    // cb(undefined, false) // ignore upload
+  }
+}
+
+app.post('/upload', upload.single('upload'/*matching `key` for the body*/), (req, res) => {
+  res.send()
+})
+```
