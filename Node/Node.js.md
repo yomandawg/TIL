@@ -283,3 +283,20 @@ app.post('/upload', upload.single('upload'/*matching `key` for the body*/), (req
   res.send()
 })
 ```
+#### sendgrid
+#### env-cmd
+* `npm i env-cmd --save-dev`
+* use environment variables stored in `.env` file
+* access with `process.env.$NAME`
+```json
+// @package.json
+{
+  ...
+  "scripts": {
+    ...
+    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js"
+  },
+```
+```javascript
+
+```

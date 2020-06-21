@@ -185,3 +185,10 @@ ${MONGO PATH}/bin/mongod.exe --dbpath=${DB PATH}
 ## Connection Pool
 * More connections opened behind the scenes
 * "lend" already made connections to clients when requested, return them back to the *connection pool* after use
+
+
+## MongoDB Compass
+* GUI MongoDB
+* **SRV Record**
+  * view service(hostname/port) from the DNS
+  * find services from the same IP

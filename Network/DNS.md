@@ -31,3 +31,7 @@
   * *A* - IP `example.com A 93.184.216.34`
   * **CNAME** - canonical name(alias) `cdn.example.com CNAME iorem-1c6b.kxcdn.com`
     * IP 주소가 자주 바뀌는 도메인에서 alias를 놓아 접근 가능하게 함
+
+### SRV record
+* view service(hostname/port) from the DNS
+* find services from the same IP
