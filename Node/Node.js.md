@@ -300,3 +300,19 @@ app.post('/upload', upload.single('upload'/*matching `key` for the body*/), (req
 ```javascript
 
 ```
+#### socket.io
+```javascript
+// server -> client
+socket.emit // to specific client
+io.emit // to every client
+socket.broadcast.emit // to every client except this one
+
+socket.join // allow emitting to a specific room
+io.to.emit // to every client in a specific room
+socket.broadcast.to.emit // to every client in a specific room except this one
+```
+
+#### bad-words
+#### mustache
+#### moment
+#### query-string (qs)
