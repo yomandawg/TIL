@@ -316,3 +316,13 @@ socket.broadcast.to.emit // to every client in a specific room except this one
 #### mustache
 #### moment
 #### query-string (qs)
+#### axios
+```javascript
+// preconfigured axios object with custom config
+axios.create({
+  baseURL: 'https://www.googleapis.com/youtube/v3',
+  params: {
+    ...
+  }
+});
+```

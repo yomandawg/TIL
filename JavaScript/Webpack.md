@@ -209,3 +209,7 @@ module.exports = {
   }
 };
 ```
+* with `reactjs`
+```javascript
+import './SeasonDisplay.css'; // webpack imports the css file and adds it into the index.html
+```

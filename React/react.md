@@ -2,15 +2,20 @@
 
 ## React(App) Component
 > the *App function*\
-* *App Component* - returns JSX and handles events\
-  => **JSX** (the HTML-like codes) - instructions to tell React what content to show
-
+### App Component
+> returns JSX and handles events\
 * **Functional** components
   - produce JSX to show content
 * **Class** components (*legacy*) || Function components with **Hooks**
   1. produce JSX to show content
   2. use the Lifecycle Method system to run code at specific points in time
   3. use the 'state' system to update content
+#### Nesting (component hierarchy)
+* a component can be shown inside of another - `<MyComponent />`
+#### Reusablity
+* easily reusable componenet
+#### Configuration
+* configure componenet when it's created
 
 ### Function Component
 ```javascript
@@ -48,38 +53,87 @@ class App extends React.Component {
 
     // the only time for direct assignment of `this.state`
     // state must be initialized on creation
-    this.state = { lat: null };
+    this.state = { ... /* states */ , errorMessage: '' /* for re-rendering on errors */ };
 
-    window.navigator.geolocation.getCurrentPosition(
-      position => {
-        // call `setState` to update the state!
-        this.setState({ lat: position.coords.latitude })
-        // => re`render`s
-      },
-      err => console.log(err)
-    )
+    // do something
   }
 
   render() {
-    return <div>Latitude: {this.state.lat}</div>
+    // do something
+  }
+}
+```
+```javascript
+// shorthand syntax
+class App extends React.Component {
+  state = { /* states */ } // babel builds the constructor anyways
+  ...
+}
+```
+* binding `this` to the class method
+```javascript
+class SearchBar extends React.Component {
+  constructor() {
+    // 1. bind `this` to the methods on creation of the class
+    this.thisExample = this.thisExample.bind(this)
+  }
+
+  thisExample = event => {
+    // 2. arrow function binds `this` to the object in which it was called on
+  }
+
+  render() {
+    return (
+      // 3. using the arrow function inside JSX object to pass on the `this` bound function
+      <form onSubmit={e => this.thisExample(e)} />
+    );
   }
 }
 ```
 
 ### Lifecycle
-1. JS file loaded by browser
+1. JS file loaded by the browser &rarr; compiled by *babel*
 2. App component gets created
 3. App returns JSX, renders HTML DOM
+#### Component Lifecycle
+&rarr; `constructor` (new instance is created) - one time setup\
+&rarr; `render` (content visible) - return *JSX*\
+&rarr; `componentDidMount` (calls on the *initial* rendering) - data-loading\
+&rarr; `componentDidUpdate` (calls when *re*-renders) - data-loading on state/props change\
+&rarr; `componentWillUnmount` (calls right before the lifecycle ends) - cleanup
+```javascript
+class App extends React.Componet {
+  constructor(props) {
+    /* TODO: one time setup */
+    super(props)
+    this.state = { /* state object */ }
+    // do something
+  }
 
-#### Nesting (component hierarchy)
-* a component can be shown inside of another - `<MyComponent />`
-#### Reusablity
-* easily reusable componenet
-#### Configuration
-* configure componenet when it's created
+  render() {
+    /* TODO: return JSX */
+    // do something
+    return ( /* JSX */ )
+  }
+
+  componentDidMount() {
+    /* TODO: data-loading */
+    // the component was rendered for the first time
+  }
+  componentDidUpdate() {
+    /* TODO: data-loading on state/props change */
+    // the component was updated (re-rendered)
+  }
+  componentWillUnmount() {
+    /* TODO: cleanup (also non-React stuff) */
+    // the component lifecycle is about to end
+  }
+}
+```
 
 ### JSX
-> special form of JS: HTML elements + other componenets\
+> instructions to tell React what content to show\
+* special form of JS: HTML elements + other componenets
 1. create a normal HTML element
   * `div` `span` `h1` `table` ...
 2. show another component
@@ -94,6 +148,19 @@ class App extends React.Component {
 * React (the *reconciler*) - work with components
 * ReactDOM (the *renderer*) - discrete what to show and render HTML DOM elements
 
+## Props
+```javascript
+const Spinner = props => {
+  return (
+    <div>{props.message}</div>
+  )
+}
+
+// provide default properties
+Spinner.defaultProps = {
+  message: 'Loading...'
+}
+```
 
 ## State
 * usable with `class` components or `function` components with `hooks`
@@ -109,4 +176,11 @@ import { useState } from "react";
 ...
 const [language, setLanguage] = useState("ru");
 const [text, setText] = useState("");
+```
+
+## Refs
+* gives access to a single DOM element
+* create and assign refs in the constructor to instance variables => pass to JSX as props
+```javascript
+
 ```
