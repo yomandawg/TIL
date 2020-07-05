@@ -80,6 +80,11 @@ const mapStateToProps = state => {
   return { songs: state.songs /* states to pass onto props */ };
 };
 
+// can increase reusability with ownProps
+const mapStateToProps = (state, ownProps) => {
+  return { songs: state.songs.find(song => song.id === ownProps.songId) };
+}
+
 // action creator -> action -> connect -> dispatch
 export default connect(
   mapStateToProps, 
@@ -102,5 +107,63 @@ export const fetchPosts = async () => {
 * when the JS code is compiled back to the ES2015 code, the `async`-`await` syntax is not returning a plain javascript object
 * the returned random action object will then dispatched into reducers which will cause an error
 
-## redux-thunk
+
+## redux middleware
+> action creator &rarr; action &rarr; dispatch &rarr; **middleware** &rarr; reducers &rarr; state
 * middleware to help make requests in a redux app (normally within the *action creators*)
+* called with dispatched action
+* stop, modify, async for actions
+
+### redux-thunk
+* action creators can return **functions**\
+&rarr; invokes the function with `dispatch`(change data) and `getState`(read data) as its arguments
+```javascript
+// @App.js
+const store = createStore(reducers, applyMiddleware(thunk));
+ReactDOM.render(
+  <App store={store} />,
+  document.querySelector('#root')
+);
+```
+* useful for making request (`async`) by manually dispatching action
+```javascript
+// @actions
+// able to return a function
+export const fetchPosts = () => async (dispatch, getState) => {
+    const response = await jsonPlaceholder.get('/post');
+
+    dispatch({ type: 'FETCH_POSTS', payload: response }) // manually dispatching
+}
+```
+
+### Reducers
+1. redux invokes every reducers one time on booting to specify the initial state
+  * like ZIR + ZSR in electrical circuit system
+  * reducer must return a **defined** value
+```javascript
+// define the initialState pseudo-code
+Reducer = (defaultInput, firstAction) => {
+  if (defaultInput is undefined) return initialState
+  else { /* go onto next step */ }
+}
+```
+2. next time the reducer is called, it will return the new state(*version 2*) based on previous state and the next action
+3. will only return the computation of input state + action argument (no outside action involving)
+4. never directly mutate the input state argument
+  * be caustious of returning the same referenced state even after modification
+```javascript
+//  check if the states has the same reference and value
+hasChanged = false || nextStateForKey !== previousStateForKey
+// return the changed state or the old state
+return hasChanged ? nextState : state
+// => redux will not recognize changes in state if you simply mutate the state
+// => when redux recognizes the state change => re-render
+```
+#### Recommended practices
+```javascript
+state.pop()           state.filter(element => element !== 'hi)
+state.push('hi')      [...state, 'hi']
+state[0] = 'hi'       state.map(el => el === 'hi' ? 'bye' : el)
+state.name = 'yo'     {...state, name: 'yo'}
+delete state.name     {...state, age: undefined} || _.omit(state, 'age')
+```

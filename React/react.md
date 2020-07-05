@@ -181,6 +181,3 @@ const [text, setText] = useState("");
 ## Refs
 * gives access to a single DOM element
 * create and assign refs in the constructor to instance variables => pass to JSX as props
-```javascript
-
-```
