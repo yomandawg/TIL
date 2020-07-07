@@ -17,3 +17,6 @@
   <option value="2">2</option>
 </select>
 ```
+
+* anchor tags (`<a href="/route">`) make a brand new request - not suitable for SPA
+  - all related HTML/CSS/JS data will be dumped; resource waste
