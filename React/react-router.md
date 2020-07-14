@@ -46,3 +46,42 @@ const App = () => {
   - `.../#/route` - the `route` will meant to be used by the client/browser react side (not the backend)
   - show `<Route>` or `index.html` content
 * **`<MemoryRouter>`** - no router shown on url
+
+
+## Programic navigation
+`history` &rarr; `BrowserRouter` &rarr; `<Route path="/mypath">` &rarr; `myPath_Component`\
+
+### navigation from `component`
+* `history` keeps track of the address bar in the browser
+* `BrowserRouter` listens to `history` for URL changes
+  - passes down the `history` object as the `prop` down to the `component` &rarr; triggers a navigation
+* a specific `Route` is visible only when the `path` matches the URL
+
+### navigation from `Action Creator`
+* `history` has the ability to *change* the address bar as well
+  - make use of the `history` object!
+* `component` passes down the `history` object from `prop`  to `Action Creator`
+* handling `history` object (a react-router object) is difficult
+```javascript
+<BrowserRouter /> // @component/App.js
+
+// anti-pattern, since `actionCreator` is called with the `history` object every single time
+export const actionCreator = history => {
+  // do something
+  dispatch({ type: 'CUSTOM_ACTION', payload: response.data })
+}
+```
+* instead, create a new controllable custom `history` object\
+`myHistory`&rarr;`PlainRouter`&rarr;`Route`&rarr;`Component`\
+```javascript
+import { createBrowserHistory } from 'history'; // from react-router-dom
+<Router history={createBrowserHistory()} /> // @component/App.js
+
+export const createStream = formValues => async (dispatch, getState) => {
+  // do something
+  dispatch({ type: 'CUSTOM_ACTION', payload: response.data });
+
+  // Do programmic navigation to get the user back to the root route
+  history.push('/');
+};
+```

@@ -86,6 +86,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 // action creator -> action -> connect -> dispatch
+// returns a new, connected component class that wraps the component you passed in.
 export default connect(
   mapStateToProps, 
   { selectSong /* action creators to pass onto props */ }

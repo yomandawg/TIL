@@ -15,3 +15,13 @@ this.imageRef.current.addEventListener('load', this.setSpans);
 
 
 5. action creator inside a action creator
+
+
+6. `gapi.load`
+
+7. redux-form `validate` and `meta` binding
+
+8. array-based reducer vs. object-based reducer
+
+9. intentional navigation vs. programmatic navigation
+  - not very easy to handle `history` object

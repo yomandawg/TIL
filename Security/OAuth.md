@@ -23,12 +23,32 @@
 * Authorization Code + Client정보를 *Resource Server*에게 전송
 * **accessToken**을 보고 *Resource Owner*(User)에게 API 기능 제공
 
----
-
-## History
+### History
 * 90's &rarr; 1 account, 1 password
 * 00's &rarr; dozen account, 1 harder password &rarr; minor security breach
 * 10's &rarr; many account, many password &rarr; major security breach
 * *Solution*: access delegation from trusted companies
   * Google, Facebook, Microsoft, Amazon, Github, etc.
   * Give access to the accounts to the third-party applcations
+
+---
+
+# gapi
+* `gapi.load`
+- `gapi.load('client:auth2')`
+- `gapi.client.init({ clientId: 'clientId' })`
+
+### React
+```javascript
+class GoogleAuth extends React.Component {
+  componentDidMount() {
+    window.gapi.load('client:auth2', () => {
+      window.gapi.client.init({
+        clientId: '...',
+        scope: 'email'
+      });
+    });
+  } 
+  // render
+}
+```

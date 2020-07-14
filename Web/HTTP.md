@@ -8,6 +8,9 @@
 
 ## HTTP Message
 ### Methods
+* `PATCH` vs. `PUT`
+  - `PATCH` updates only the changed properties, whereas `PUT` updates the changed properties and drop off the unupdated ones
+
 ### Status Code
 | code | msg |
 |:----:|:---:|

@@ -140,3 +140,12 @@ const transaction = ({arg1, arg2} = {}) => {
     // do something
 }
 ```
+
+
+### Key Interpolation
+```javascript
+const myObject = {'a': 1, 'b': 2};
+
+{ ...myObject, ['a']: 3 }; // {a: 3, b: 2}
+{ ...myObject, ['c']: 3 }; // {a: 1, b: 2, c: 3}
+```
