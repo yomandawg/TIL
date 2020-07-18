@@ -121,3 +121,23 @@ const streamReducer = (state={}, action) => {
   }
 }
 ```
+
+## React.Fragment
+* prevent the wrapping element of JSX to be invisible and doesn't have any impact on the DOM
+```javascript
+// possible CSS issue
+return (
+  <div>
+    <button />
+    <button />
+  </div>
+);
+
+// solution
+return (
+  <React.Fragment> // <>
+    <button>
+    <button />
+  <React.Fragment /> // </>
+)
+```

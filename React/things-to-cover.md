@@ -25,3 +25,5 @@ this.imageRef.current.addEventListener('load', this.setSpans);
 
 9. intentional navigation vs. programmatic navigation
   - not very easy to handle `history` object
+
+10. event propagation

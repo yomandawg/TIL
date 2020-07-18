@@ -17,14 +17,21 @@ const App = () => {
     <div>
       <BrowserRouter>
         <div>
-          <Route path="/" exact={true} component={Index} /> // exact calls the Route only when the path is exact match
-          <Route path="/main" component={Main} />
+          <Switch> // only show 1 potential route
+            <Route path="/" exact={true} component={Index} /> // exact calls the Route only when the path is exact match
+            <Route path="/main" component={Main} />
+          </Switch>
         </div>
       </BrowserRouter>
     </div>
   );
 };
 ```
+
+### Route `props`
+* `location`
+* `match` - information about the URL
+
 
 ### Link
 > prevent the page from reloading\

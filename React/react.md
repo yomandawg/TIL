@@ -9,7 +9,7 @@
 * **Class** components (*legacy*) || Function components with **Hooks**
   1. produce JSX to show content
   2. use the Lifecycle Method system to run code at specific points in time
-  3. use the 'state' system to update content
+  3. use the *state* system to update content
 #### Nesting (component hierarchy)
 * a component can be shown inside of another - `<MyComponent />`
 #### Reusablity
@@ -181,3 +181,17 @@ const [text, setText] = useState("");
 ## Refs
 * gives access to a single DOM element
 * create and assign refs in the constructor to instance variables => pass to JSX as props
+* the `ref` receives the underlying DOM element as its current property
+```javascript
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.myRef = React.createRef();
+  }
+  render() {
+    return <div ref={this.myRef} />;
+  }
+}
+
+const node = this.myRef.current; // accessing that node
+```
