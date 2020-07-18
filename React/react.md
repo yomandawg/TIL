@@ -178,7 +178,7 @@ const [language, setLanguage] = useState("ru");
 const [text, setText] = useState("");
 ```
 
-## Refs
+#### Refs
 * gives access to a single DOM element
 * create and assign refs in the constructor to instance variables => pass to JSX as props
 * the `ref` receives the underlying DOM element as its current property
@@ -195,3 +195,9 @@ class MyComponent extends React.Component {
 
 const node = this.myRef.current; // accessing that node
 ```
+
+#### external HTML inside JSX
+```javascript
+<span dangerouslySetInnerHTML={{ __html: /* HTML script */ }}></span>
+```
+* vulnerable for *XSS* attacks

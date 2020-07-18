@@ -21,6 +21,3 @@ const NodeMediaServer = require('node-media-server');
   - browser: `http://localhost:8000/live/${STREAM_KEY}.flv`
   - broadcaster: `rtmp://localhost/live`, `STREAM_KEY`
 * `flv.js` - `npm install flv.js`
-```javascript
-// cleanup after the stream is over
-```

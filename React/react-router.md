@@ -1,8 +1,52 @@
 # react-router
+```javascript
+// code-behind
+const Route = ({ path, children }) => {
+  return window.location.pathname === path
+    ? children
+    : null;
+};
+
+// JSX
+return (
+  <div>
+    <Route path="/list">
+      <List props={props}>
+    </Route>
+  </div>
+);
+```
+
+### Link
+> prevent page reloading from the requests\
+* Link &rarr; Navigation Event &rarr; Route &rarr; detect the change and update URL
+* prevent refreshing with `window.history.pushState({}, '', '/list')`
+```javascript
+const Link = ({ className, href, children }) => {
+  const onClick = (event) => {
+    if (event.metaKey || event.ctrlKey) {
+      return; // ctrl-key opens in a new tab
+    }
+
+    event.preventDefault(); // prevent reloading
+    window.history.pushState({}, '', href); // update URL
+    
+    // communicate the changes
+    const navEvent = new PopStateEvent('popstate');
+    window.dispatchEvent(navEvent);
+  };
+
+  return (
+    <a onClick={onClick} className={className} href={href}>
+      {children}
+    </a>
+  );
+};
+```
 
 ## react-router-dom
 > `npm install --save react-router-dom`\
-> navigtaion for dom-based browser web apps
+> navigtaion for dom-based browser web apps\
 ```javascript
 const Index = () => {
   return <div>Index Page</div>;

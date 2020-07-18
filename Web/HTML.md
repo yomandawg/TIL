@@ -20,3 +20,11 @@
 
 * anchor tags (`<a href="/route">`) make a brand new request - not suitable for SPA
   - all related HTML/CSS/JS data will be dumped; resource waste
+
+
+### Event Bubbling
+* a way to detect a click event on any element besides one it created
+* set up a manual event listener on the body element => a click on any element will bubble up to the body
+```javascript
+document.body.addEventListener('click', () => console.log('click!'))
+```
