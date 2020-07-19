@@ -59,6 +59,19 @@ store.dispatch(/* action creator */)
 3. Connect - communicate with the store
 4. Components
 
+### Provider
+* make `store` available to any nested components that have been wrapped with `connect` function
+```javascript
+const stroe = createStore()
+
+ReactDom.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
+```
+
 ### Example
 ```javascript
 class SongList extends Component {

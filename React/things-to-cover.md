@@ -33,3 +33,9 @@ Hooks are for functional components to give them features that previously only c
 
 Functional components (and the hooks that go with them) just give you a different way to organize your code, a way that some programmers find more intuitive than classes.
 ```
+
+* `Provider` vs `Consumer` in context
+
+* redux vs context
+
+* separating business logic in a context system

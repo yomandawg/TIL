@@ -140,4 +140,27 @@ const Dropdown = ({ options, selected, onSelectedChange }) => {
 ```
 
 ## Custom Hook
-> create a custom hook or reuse prebuilt hooks&nbsp;
+> create a *reusable* custom hook on top of prebuilt hooks\
+* choose formal `input` and `output` to return
+```javascript
+// example
+const useVideos = defaultSearchTerm => {
+  const [videos, setVideos] = useState([]);
+  
+  useEffect(() => {
+    search(defaultSearchTerm);
+  }, []);
+
+  const search = async term => {
+    const response = await youtube.get('/search', {
+      params: {
+        q: term
+      }
+    });
+
+    setVideos(response.data.items);
+  };
+
+  return [videos, search]; // React convention
+};
+```
