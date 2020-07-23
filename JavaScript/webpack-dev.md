@@ -97,7 +97,7 @@ module.exports = {
 ## Loaders
 > pre-process with certain rules
 
-### CSS
+### CSS-Loader & Style-Loader
 ```bash
 npm install --save-dev style-loader css-loader
 ```
@@ -124,7 +124,7 @@ module.exports = {
 * **order**: `css-loader` &rarr; `style-loader`; `Array.pop`
 
 
-### SASS
+### SASS-Loader
 * `css-loader` not compatible with `/\.scss$/`; *SASS(SCSS)* needs to be compiled to be *CSS*
 ```bash
 npm install --save-dev sass-loader node-sass
@@ -137,6 +137,51 @@ use: [
   "css-loader", // 2. CSS to common JS
   "sass-loader" // 1. SASS to CSS
 ]
+```
+
+### HTML-Loader
+* exports HTML as string (minimized) to javascript
+```bash
+npm install --save-dev html-loader
+```
+* use `html-loader`
+```javascript
+// webpack.common.js
+module: {
+  rules: [
+    {
+      test: /\.html$/, // regEx: end with `.html`
+      use: ["html-loader"]
+    }
+  ],
+},
+```
+
+```bash
+npm run build # cause error
+```
+* error causes
+  1. `html-loader` processes through the `html` file and converts it into valid javascript code
+  2. `<img src="./assets/webpack.svg"/>` is converted into `require("./assets/webpack.svg")`, however the `svg` file cannot be apropriately processed
+
+
+### File-Loader
+* resolves `import`/`require` on a file into a url and emits the file into the output directory
+```bash
+npm install --save-dev file-loader
+```
+* use `file-loader`
+```javascript
+{
+  test: /\.(svg|png|jpg|gif)$/, // regEx: end with `.svg` or `.png` or `.jpg` or `.gif`
+  use: {
+    loader: "file-loader",
+    options: {
+      name: "[name].[hash].[ext]", // emit the file (hashed for cache busting)
+      outputPath: "imgs" // configure path to emit into
+    }
+  }
+}
 ```
 
 
@@ -159,12 +204,11 @@ module.exports = {
   - `[contentHash].js` for capricious application files
 
 
-
-
 ## Plugins
 > additional functionality to Webpack
 
-* `HtmlWebpackPlugin` - helper for html generation
+### html-webpack-plugin
+> helper for html generation\
 ```bash
 npm install --save-dev html-webpack-plugin
 ```
@@ -202,3 +246,271 @@ plugins: [new HtmlWebpackPlugin({
 })],
 ```
 * provided information will be inserted into the template
+
+
+### clean-webpack-plugin
+> clean up `dist` on building\
+```bash
+npm install --save clean-webpack-plugin
+```
+```javascript
+// webpack.prod.js
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+module.exports = merge(common, {
+  plugins: [new CleanWebpackPlugin()]
+});
+```
+
+
+## Multi-Configurations
+* manage multi configuration files for multipurpose
+
+### Common
+* `webpack.common.js`
+```javascript
+module.exports = {
+  entry: "./src/index.js",
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/template.html"
+    })
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader"
+        ]
+      },
+    ],
+  },
+};
+```
+
+* include the functionality from `webpack.common.js`
+```bash
+npm install --save-dev webpack-merge
+```
+* easily merge config files by `webpack-merge`
+```javascript
+// webpack.dev.js
+const common = require("./webpack.common");
+const { merge } = require("webpack-merge"); // import merge function
+
+module.exports = merge(common, {
+  mode: "development",
+  output: {
+    filename: "main.js",
+    path: path.resolve(__dirname, "dist")
+  }
+});
+```
+```javascript
+// webpack.prod.js
+const common = require('./webpack.common');
+const { merge } = require("webpack-merge");
+
+module.exports = merge(common, {
+  mode: "production",
+  output: {
+    filename: "main.[contentHash].js",
+    path: path.resolve(__dirname, "dist")
+  }
+});
+```
+
+* set different modes in npm settings
+```json
+// package.json
+"scripts": {
+    "start": "webpack --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
+  },
+```
+```bash
+npm start # development mode
+npm run build # production build
+```
+
+### Webpack Dev Server
+> build automation\
+```bash
+npm install --save-dev webpack-dev-server
+```
+* dev-server setup
+```json
+"scripts": {
+  "start": "webpack-dev-server --config webpack.dev.js",
+}
+```
+* automatically open the browser with `--open` option
+```json
+"start": "webpack-dev-server --config webpack.dev.js --open",
+```
+* code changes now automatically rebuilds and live-updates the rendered page
+* the dev-server is run on memory; doesn't create any files
+
+
+## Multiple Entrypoints
+```javascript
+// webpack.common.js
+module.exports = {
+  entry: {
+    main: "./src/index.js",
+    vendor: "./src/vendor.js
+  }
+  ...
+```
+```javascript
+// webpack.prod.js
+module.exports = merge(common, {
+  mode: "production",
+  output: {
+    filename: "[name].[contentHash].bundle.js",
+    ...
+```
+```javascript
+// webpack.dev.js
+module.exports = merge(common, {
+  mode: "development",
+  output: {
+    filename: "[name].bundle.js",
+    ...
+```
+* use `vendor.js` for library imports
+  - webpack will only freshly bundle changed codes (allows caching of `vendor.js`)
+
+
+## Extracting CSS
+* standalone CSS rendering is faster than converted javascript codes
+```bash
+npm install --save-dev mini-css-extract-plugin
+```
+* configuration
+```javascript
+// webpack.common.js
+module.exports = {
+  module: {
+    rules: [
+      /* remove CSS rules
+      {
+        test: /\.scss$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader"
+        ]
+      }
+      */
+      ...
+```
+```javascript
+// webpack.dev.js
+module.exports = merge(common, {
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader"
+        ]
+      }
+      ...
+```
+```javascript
+// webpack.prod.js
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+module.exports = merge(common, {
+  plugins: [
+    // use MiniCssExtractPlugin
+    new MiniCssExtractPlugin({
+      filename: "[name].[contentHash].css" // emit CSS file
+    }),
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          MiniCssExtractPlugin.loader, // 3. Extract CSS into files
+          "css-loader", // 2. process CSS
+          "sass-loader" // 1. process SASS
+        ]
+      }
+    ]
+    ...
+```
+
+## Minify HTML/JS/CSS
+
+### optimize-css-assets-webpack-plugin
+> minify CSS size for production
+```bash
+npm install --save-dev optimize-css-assets-webpack-plugin
+```
+```javascript
+// webpack.prod.js
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+module.exports = merge(common, {
+  optimization: {
+    minimizer: [new OptimizeCssAssetsPlugin()]
+  },
+  ...
+```
+* *problem*: CSS is optimized but JS is back to normal
+  - *default optimization mode is for JS* so explicit use of `minimizer` will *override* it
+```javascript
+// webpack.prod.js
+const TerserPlugin = require("terser-webpack-plugin"); // default plugin for JS optimization
+...
+optimization: {
+  minimizer: [
+    new OptimizeCssAssetsPlugin(),
+    new TerserPlugin()
+  ]
+},
+```
+
+### HtmlWebpackPlugin - minify option
+* change the `webpack.common.js` to not minify the development version
+```javascript
+// webpack.common.js
+/* remove
+plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/template.html"
+    })
+  ],
+*/
+```
+```javascript
+// webpack.dev.js
+module.exports = merge(common, {
+  // add the plugin here for unaffected dev mode 
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/template.html"
+    })
+  ],
+```
+```javascript
+// webpack.prod.js
+optimization: {
+  minimizer: [
+    // add the minimizer
+    new HtmlWebpackPlugin({
+      template: "./src/template.html",
+      minify: {
+        removeAttributeQuotes: true,
+        collapseWhitespace: true,
+        removeComments: true
+      }
+    })
+    ...
+```
