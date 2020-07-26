@@ -320,13 +320,114 @@ export default (req, store) => {
   return template;
 };
 ```
+* to use `async/await` ontop of babel
+```javascript
+import 'babel-polyfill'; // helper functions from babel to use async/await, etc.
+```
+
+#### Detecting data load and action creators
+* need to know the exact instant of the request issued from action creators are completed
+
+* traditional react-redux app
+
+| React | | Redux |
+| :-: | :-: | :-: |
+| `Root` Component | | |
+| &darr; | | |
+| `UserList` | `ComponentDidMount`<br/>&rarr; | `fetchUsers` Action Creator |
+| | | &darr; |
+| `UserList` | list of `Users`<br/>&larr; | `users` Reducer |
+
+* no time to detect data loads (`componentDidMount`) from the back, then send it to browser
+* changes the server side data load flow to...
+
+| SSR Flow | |
+| :-: | :-: |
+| App rendered | &rarr; **Response sent back to browser** |
+| `UserList` `componentDidMount` | |
+| `fetchUsers` | |
+| API request | |
+| ... | |
+
+* SSR HTML is sent back to the browser before any data fetching is completed
+
+* **Solution**
+1. render the application two times
+  * *PROS*: easy to apply
+  * *CONS*: waste of network resource & only loads one round
+2. attach data-loading functions
+  - figure out what components need to be rendered (based on URL)
+  - call `loadData` attached to thos components
+  - detect that requests are complete
+  - render the app
+  - send result to browser
+  * *PROS*: renders once and clearer
+  * *CONS*: extra codes
+
+* `connect` function works with `Provider`
+  - since we need to work with the `store` before rendering &rarr; manually handle `store`(manually call `store.dispatch`) without `connect`
+* `react-router-config`
+  - so we can direct what components to be rendered based on URL
+```javascript
+// Routes.js
+
+// export default () => {
+//   return (
+//     <div>
+//       <Route exact path="/" component={Home} />
+//       <Route path="/users" component={UsersList} />
+//     </div>
+//   )
+// };
+
+// so we can direct what components to be rendered based on URL
+export default [
+  {
+    path: '/',
+    component: Home,
+    exact: true
+  },
+  {
+    loadData // figure out what components need to be rendered (arbitrary)
+    path: '/users',
+    component: UsersList
+  }
+];
+```
+```javascript
+// replace
+<Routes /> => <div>{renderRoutes(Routes)}</div>
+```
+```javascript
+// index.js (express server)
+app.get('*', (req, res) => {
+  // match the requested URL
+  // returns the `loadData` and `match`
+  // match the requested URL
+  const promises = matchRoutes(Routes, req.path).map(({ route }) => {
+    return route.loadData ? route.loadData(store) : null; // return an Array of promises
+  });
+
+  // when all promises are resolved
+  Promise.all(promises).then(() => {
+    res.send(render(req, store));
+  });
+})
+```
+
+| Component File | Routes File | Server `index.js` |
+| :-: | :-: | :-: |
+| `Component`<br/>`loadData` | match path and component to show | run each component's `loadData` |
+
+| Server `index.js` | | `loadData` |
+| :-: | :-: | :-: |
+| call `loadData`, passing in the redux store | &rarr; | dispatch action creator |
+| | | &darr; |
+| resolve(Promise) then render | &larr; | return a promise |
 
 
 
 #### Authentication needs to be handled on server
 * cookie based authentication problem - server does not have easy access to the cookie
-
-#### Detecting data load and action creators
-* need to know the exact instant of the request issued from action creators are completed
 
 #### Rehydration
