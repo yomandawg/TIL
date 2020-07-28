@@ -293,7 +293,7 @@ export default (req) => {
 
 ## SSR with Redux
 
-#### Store differences between browser & server
+### Store differences between browser & server
 * create two different stores
 * **Server** - not to closely attach it to the `Provider` for handling carefully then pass it to render
 ```javascript
@@ -325,7 +325,7 @@ export default (req, store) => {
 import 'babel-polyfill'; // helper functions from babel to use async/await, etc.
 ```
 
-#### Detecting data load and action creators
+### Detecting data load and action creators
 * need to know the exact instant of the request issued from action creators are completed
 
 * traditional react-redux app
@@ -426,8 +426,86 @@ app.get('*', (req, res) => {
 | resolve(Promise) then render | &larr; | return a promise |
 
 
+### Client Side Rehydration
+
+* how to preserve the server `reduxState` to shown on the client?
+
+| State Process | |
+| :-: | :-: |
+| Server Redux fetches data | `reduxState = { users: [{name:'bill'}, ...] }` |
+| Page rendered on server | |
+| <span style="color:green">Store dumps its state into the HTML template</span> | `json` data |
+| Page HTML sent to browser | |
+| Client `bundle.js` sent to browser | |
+| Bundle creates its client side redux store | |
+| <span style="color:green">Client store initialized with state that was dumped in page</span> | |
+| Page rendered with store from client side redux | `reduxState = { users: []}` |
+
+```javascript
+// renderer.js
+return `
+  <html>
+    <head></head>
+    <body>
+      <div id="root">${content}<div>
+      <script>
+        window.INITIAL_STATE = ${JSON.stringify(store.getState())}
+      </script>
+      <script src="bundle.js"></script>
+    </body>
+  </html>
+`;
+```
+
+* initial hydrating will use exact same state (`store.getState()`) from the server
+
+
+#### Prevent XSS
+* `serialize-javascript`
+  - takes a string and escape malicious characters
+```javascript
+import serialize from 'serialize-javascript';
+
+JSON.stringify(testCode);
+serialize(testCode); // done!
+```
+
 
 #### Authentication needs to be handled on server
 * cookie based authentication problem - server does not have easy access to the cookie
 
-#### Rehydration
+* browser trying to access the `api server` sends cookies to the `api server`
+* browser trying to access the `render server` __does not__ send cookies from `api server`
+  - no way for the `render server` to get cookies related to the `api server`
+  - how to share the `api server` cookies with the `render server`?
+
+| | | Sharing Proxy | | |
+| :-: | :-: | :-: | :-: | :-: |
+| Browser | (Oauth Process)&rarr; | Render Server | (Oauth'ed)&rarr; | API Server |
+| Browser | &larr;(cookie with unique code) | Render Server | &larr;(cookie with unique code) | API Server |
+
+* user request to `proxy` running on the `render server` 
+* &rarr; proxy forwards the request for authentication onto the `api server`
+* &rarr; cookie is issued by the `api server`
+* &rarr; `proxy` will communicate the cookie back to the browser
+
+* browser will think that it's communicating with the `render server`, instead, the `proxy` is invisibly sharing requests with the `api server`; the browser will believe that the cookie is being issued by the `render server`
+
+* cookies instead of **JWT**
+
+| Browser | | Renderer |
+| :-: | :-: |:-: |
+| | `request('/')`&rarr; | |
+| | &larr;`jwt`? | |
+| | `jwt`&rarr; | |
+| | &larr;`content` | |
+
+* cannot attach specific information with a `GET` request - `jwt` cannot be controlled within the first request
+  - alternative solution: *cookies can be attached to a request*!
+
+* `express-http-proxy`
+```javascript
+// index.js
+import proxy from 'express-http-proxy';
+app.use('/api', proxy('http://react-ssr-api.herokuapp.com'));
+```

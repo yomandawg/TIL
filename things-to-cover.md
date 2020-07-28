@@ -39,3 +39,12 @@ Functional components (and the hooks that go with them) just give you a differen
 * redux vs context
 
 * separating business logic in a context system
+
+
+
+---
+
+
+## SSR
+
+* loadData on client side (for SPA, request to API twice is unnecessary?)
