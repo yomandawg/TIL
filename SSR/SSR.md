@@ -4,8 +4,13 @@
   - Browser requests page &rarr; Browser requests JS file &rarr; React app boots, requests json from backend &rarr; Content visible
 
 * condensing loading process is critical for user experience 
-* SSR advantage
+
+* **SSR advantage**
   - Browser requests page &rarr; (rendered page from the server) &rarr; Content visible
+  - isomorphic app - exact same code executed on the server and the client
+    * better user experience
+    * faster overall loading time (although, initial page rendering is slower)
+    * predictable SEO and site indexing
 
 
 ## SSR Process
@@ -405,7 +410,7 @@ app.get('*', (req, res) => {
   // returns the `loadData` and `match`
   // match the requested URL
   const promises = matchRoutes(Routes, req.path).map(({ route }) => {
-    return route.loadData ? route.loadData(store) : null; // return an Array of promises
+    return route.loadData ? route.loadData(store) : null; // return an Array of promises - collect all the loadData functions
   });
 
   // when all promises are resolved
@@ -439,7 +444,7 @@ app.get('*', (req, res) => {
 | Client `bundle.js` sent to browser | |
 | Bundle creates its client side redux store | |
 | <span style="color:green">Client store initialized with state that was dumped in page</span> | |
-| Page rendered with store from client side redux | `reduxState = { users: []}` |
+| Page rendered with store from client side redux | `reduxState = { users: [] }` |
 
 ```javascript
 // renderer.js
@@ -474,8 +479,8 @@ serialize(testCode); // done!
 #### Authentication needs to be handled on server
 * cookie based authentication problem - server does not have easy access to the cookie
 
-* browser trying to access the `api server` sends cookies to the `api server`
-* browser trying to access the `render server` __does not__ send cookies from `api server`
+* browser trying to access the `api server` creates cookies of the `api server`
+* browser trying to access the `render server` __does not share__ cookies of the `api server`
   - no way for the `render server` to get cookies related to the `api server`
   - how to share the `api server` cookies with the `render server`?
 
@@ -489,9 +494,13 @@ serialize(testCode); // done!
 * &rarr; cookie is issued by the `api server`
 * &rarr; `proxy` will communicate the cookie back to the browser
 
-* browser will think that it's communicating with the `render server`, instead, the `proxy` is invisibly sharing requests with the `api server`; the browser will believe that the cookie is being issued by the `render server`
+* browser will think that it's communicating with the `render server`.
+* The `proxy` is invisibly sharing requests with the `api server`; the browser will believe that the cookie is being issued by the `render server`
 
-* cookies instead of **JWT**
+* cookies instead of **JWT** reality
+  * no request body with `GET` request
+  * no rendered content as a response to the initial request
+  * the only thing that's attached to the request is *cookies*!
 
 | Browser | | Renderer |
 | :-: | :-: |:-: |
@@ -508,4 +517,282 @@ serialize(testCode); // done!
 // index.js
 import proxy from 'express-http-proxy';
 app.use('/api', proxy('http://react-ssr-api.herokuapp.com'));
+```
+
+* **initial page load phase**
+  - `request` with attached `cookie` is made to the `render server`
+  - `render server` makes use of the `proxy`(`fetchFunction`&rarr;`Action Creator`&rarr;`axios` request to the `api server`)
+  - take the `cookie` off of the initial browser request and attach it to the `axios` request (tricking the api server to think that the request is directly being made)
+
+* **followup request phase**
+  - after the initial request, SSR(isomorphic) will enable browser to make the exact same request as the server (same javascript code)
+  - `fetchFunction`&rarr;`Action Creator`&rarr;`axios` request with attached `cookie` to the `render server` (`axios` behaves slightly differently with attached `cookies`)
+  - `render server` doesn't need to attach `cookies` manually anymore, use `proxy` right away to send request to `api server`
+
+```javascript
+// sudo-code
+if (NOT_RUNNING_ON_SERVER) {
+  const res = await axios.get('render_server/users') // browser request
+} else {
+  const res = await axios.get('/api/users', { cookie }); // server request
+}
+```
+
+* how to notice that the request is from the server or the client?
+
+* custom `axios` configuration
+  * one for client and one for server
+```javascript
+// set options for axios
+var instance = axios.create({
+  baseURL: 'http://some-domain.com/api',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'}
+});
+```
+
+* `redux-thunk` configuration
+```javascript
+function createThunkMiddleware(extraArgument);
+
+const thunk = createThunkMiddleware();
+// allows customization of the third hidden extraArgument
+thunk.withExtraArgument = createThunkMiddleware;
+
+export default thunk;
+```
+
+* create custom `axios` &rarr; pass to `redux-thunk` &rarr; custom `axios` availbale in `action creator`
+  * attach all that cookies and server vs. client stuff inside the customization!
+
+* client side
+```javascript
+// client.js
+const axiosInstance = axios.create({
+  baseURL: '/api' // default request to /api/something
+});
+
+const store = createStore(
+  reducers,
+  window.INITIAL_STATE, // initial state
+  applyMiddleware(thunk.withExtraArgument(axiosInstance))
+);
+```
+```javascript
+// actions/index.js
+export const fetchUsers = () => async (dispatch, getState, api/*axiosInstance*/) => {
+  // const res = await axios.get('http://react-ssr-api.herokuapp.com/users')
+  const res = await api.get('/users'); // custom `axiosInstance`
+
+  dispatch({
+    type: FETCH_USERS,
+    payload: res
+  });
+};
+```
+
+* server side
+```javascript
+// index.js
+app.get('*', (req, res) => {
+  const store = createStore(req); // pass `req` to the store to make cookies accessible
+  ...
+```
+```javascript
+// creatStore.js
+export default (req) => {
+  const axiosInstance = axios.create({
+    baseURL: 'http://react-ssr-api.herokuapp.com' // full URL since it's from the server
+    headers: { cookie: req.get('cookie') || '' /* disposing undefined */ } // pass cookies
+  });
+
+  const store = createStore(
+    reducers,
+    {}
+    applyMiddleware(thunk.withExtraArgument(axiosInstance))
+  )
+  
+  return store;
+};
+```
+
+
+### global component (nested routes)
+```javascript
+// App.js
+const App = ({ route }) => {
+  return (
+    <div>{renderRoutes(route.routes)}</div>
+  );
+};
+
+export default {
+  component: App,
+  loadData: ({ dispatch }) => dispatch(fetchCurrentUser()) // always running action
+};
+```
+```javascript
+// Router.js
+export default [
+  {
+    ...App, // default component; no path since this component will always be displayed
+    routes: [ // the below components are nested inside the App component
+      {
+        ...HomePage,
+        path: '/',
+        exact: true
+      },
+      {
+        ...UsersListPage,
+        path: '/users',
+      }
+    ]
+  }
+];
+```
+
+* tip
+```javascript
+<Link to="/route" /> // react app navigation
+<a href="/route" /> // browser URL change
+```
+
+
+### NotFoundPage (404 Not Found)
+* `context` prop allows communication between the rendered component and the render file
+  - `context={{}}` (empty object) &rarr; `<StaticRouter>` prop `context` &rarr; `NotFoundPage` component receives `context` prop (fill in the `context` object with the error message) &rarr; after rendering, examine if `NotFoundPage` has filled `context` with the error message (catch if error)
+
+* how to connect `context` with `response` from Express.js
+```javascript
+// renderer.js
+export default (req, store, context/*the third argument*/) => {
+  const content = renderToString(
+    <Provider store={store}>
+      <StaticRouter location={req.path} context={context}> // context prop
+        <div>{renderRoutes(Routes)}<div> // custom routes
+      </StaticRouter>
+    </Provider>
+  );
+
+  return /* raw HTML here */
+}
+```
+```javascript
+// pages/NotFoundPage.js
+const NotFoundPage = ({ staticContext = {} /*context*/ } /* default set to {} since this will not be available for the browser since client.js renders the component with `<BrowserRouter>` */) => {
+  staticContext.notFound = true; // set notFound to true
+  ...
+};
+```
+```javascript
+// index.js (express)
+app.get('*', (req, res) => {
+  ...
+  Promise.all(promises).then(() => {
+    const context = {};
+    const content = renderer(req, store, context);
+
+    if (context.notFound) {
+      res.status(404);
+    }
+
+    res.send(content);
+  });
+})
+```
+
+
+### Prevent server from 'hanging' (401 Unauthorized)
+```javascript
+// index.js (express server)
+app.get('*', (req, res) => {
+  // match the requested URL
+  const promises = matchRoutes(Routes, req.path).map(({ route }) => {
+    return route.loadData ? route.loadData(store) : null; // return an Array of promises - collect all the loadData function
+  });
+
+  // note that if one of the promise is not resolved, `then` will not be called
+  Promise.all(promises).then(() => {
+    ...
+  });
+});
+```
+
+1. handle with `catch` (not recommended)
+  * bad approach since the server *knows* what went wrong - sending an irresponsible error message is a not good approach
+```javascript
+Promise.all(promises).then(() => {
+  ...
+}).catch(() => {
+  res.send('Something went wrong'); // abandon the 'entire' SSR process and return an error
+});
+```
+
+2. attempt to render the content (not recommened)
+  * bad approach since the application is rendered too early (right after `rejected`) when other unresolved promise is being awaited
+```javascript
+Promise.all(promises)
+  .then(render)
+  .catch(render) // force render
+```
+
+3. circumvent the issue with `Promise.all` (recommended)
+  * wrap the inner promises with the outer promise to give chance for all requests to be completed
+```javascript
+const promises = matchRoutes(Routes, req.path).map(({ route }) => {
+  return route.loadData ? route.loadData(store) : null; // return an array of [promise || null]
+}).map(promise => {
+  if (promise) {
+    return new Promise((resolve, reject) => {
+      promise.then(resolve).catch(resolve); // always resolving promise
+    });
+  }
+});
+
+Promise.all(promises).then(() => {
+  ...
+})
+```
+
+
+## higher order component (HOCs)
+* takes a component and returns a new component
+
+* Authentication approach with HOCs
+```javascript
+// components/hocs/requireAuth.js
+export default ChildComponent => {
+  class RequireAuth extends Component {
+    render() {
+      switch (this.props.auth) {
+        case false:
+          return <Redirect to="/" />;
+        case null:
+          <div>Loading...</div>;
+        default:
+          return <ChildComponent {...this.props} />;
+      }
+    }
+  }
+
+  function mapStateToProps({ auth }) {
+    return { auth };
+  }
+
+  return connect(mapStateToProps)(RequireAuth);
+};
+```
+```javascript
+// pages/AdminListPage.js
+export default {
+  component: connect(mapStateToProps, { fetchAdmins })(requireAuth(AdminsListPage)),
+  loadData: ({ dispatch }) => dispatch(fetchAdmins())
+};
+```
+* SSR `Redirect`
+```javascript
+// index.js (express server)
+if (context.url) { // <Redirect> changes the `context.url`
+  return res.redirect(301, context.url) // 301 Moved Permanently (URL redirection)
+}
 ```
