@@ -48,3 +48,5 @@ Functional components (and the hooks that go with them) just give you a differen
 ## SSR
 
 * loadData on client side (for SPA, request to API twice is unnecessary?)
+
+* `RenderToString` vs. `RenderToNodeStream`
