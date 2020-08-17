@@ -124,142 +124,22 @@ function requireAuth(req: Request, res: Response, next: NextFunction): void {
 }
 ```
 
-## Decorators
+---
 
-- _functions_ that can be used to modify/change/anything different properties/methods in the _class_
+### Singleton Pattern
 
-* `tsconfig.json`
-
-```json
-"compilerOptions": {
-  ...
-  /* Experimental Options */
-  "experimentalDecorators": true, /* Enables experimental support for ES7 decorators. */
-  "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */
-  ...
-}
-```
-
-- use on class property, method, accessor
-- _executed only one time when the class is defined_
-  - does not get executed when an instance of the class is created
+- allow only one `express.Router`
 
 ```typescript
-function myDecorator(
-  target: any /* `prototype` of the object */,
-  key: string /* key of the property/method/accessor of the object */,
-  desc: PropertyDescriptor /* property descriptor */
-): any;
-```
+export class AppRouter {
+  private static instance: express.Router;
 
-- JS translation
+  static getInstance(): express.Router {
+    if (!AppRouter.instance) {
+      AppRouter.instance = express.Router();
+    }
 
-```javascript
-var __decorate = function (decorators, target, key, desc) {
-  var desc = Object.getOwnPropertyDescriptor(target, key);
-
-  for (var decorator of decorators /* list */) {
-    decorator(target, key, desc);
+    return AppRouter.instance;
   }
-};
-```
-
-- example
-
-```typescript
-class MyClass {
-  color: string = 'red';
-
-  get foo(): string {
-    return this.color;
-  }
-
-  @myDecorator
-  bar(): void {
-    console.log('foo');
-  }
-}
-```
-
-- `PropertyDescriptor` (`Object.getOwnPropertyDescriptor`)
-
-  |     flag     |             funcionality             |
-  | :----------: | :----------------------------------: |
-  |   writable   |            allow changes             |
-  |  enumerable  |          allows `for...in`           |
-  |    value     |            current value             |
-  | configurable | definition can be changed or deleted |
-
-- example
-
-```javascript
-const car = { maker: 'hyundai', year: 2000 };
-
-Object.getOwnPropertyDescriptor(car, 'maker');
-// { value: "hyundai", writable: true, enumerable: true, configurable: true }
-
-Object.defineProperty(car, 'make', { writable: false }); // object no longer writable
-
-car.maker = 'kia';
-car.maker; // "hyundai" /* unchanged */
-```
-
-- since you cannot change a single object's property with the `prototype`, control its funcionality with `PropertyDescriptor`
-
-- patterns
-
-```typescript
-class FactoryPattern {
-  @errorMessageFactory('Error Message')
-  pilot(): void {
-    throw new Error();
-  }
-}\
-
-function errorMessageFactory(errorMessage: string) {
-  return function (target: any, key: string, desc: PropertyDescriptor): void {
-    const method = desc.value; // () => { throw new Error(); }
-
-    desc.value = function () {
-      try {
-        method(); // () => { throw new Error(); }
-      } catch (e) {
-        console.log(errorMessage);
-      }
-    };
-  };
-}
-```
-
-```typescript
-class ParameterDecoratorUsage {
-  pilot(
-    @parameterDecorator param1: string,
-    @parameterDecorator param2: boolean
-  ): void {
-    // do something
-  }
-}
-
-function parameterDecorator(
-  target: any,
-  key: string,
-  index: number /* index number of the parameter */
-) {
-  console.log(key, index);
-}
-
-// pilot 1
-// pilot 0
-```
-
-```typescript
-@classDecorator
-class ClassDecoratorUsage {}
-
-function classDecorator(
-  constructor: typeof ClassDecoratorUsage /* can only use `constructor` on class */
-) {
-  // do something with the constructor
 }
 ```
