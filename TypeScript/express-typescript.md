@@ -87,6 +87,8 @@ body: { [key: string]: string | undefined };
 
 - **SOLUTION**: extend type definitions
 
+---
+
 ```typescript
 interface RequestWithBody extends Request {
   body: { [key: string]: string | undefined };
