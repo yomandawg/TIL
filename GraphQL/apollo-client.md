@@ -106,7 +106,6 @@ export default graphql(mutation)(SongCreate);
 
 ```javascript
 this.props.mutate({
-  mutation: createSong,
   variables: {
     title: this.state.title
   },
@@ -126,7 +125,6 @@ this.props.mutate({ variables: { id } }).then(() => this.props.data.refetch());
 ```javascript
 this.props
   .mutate({
-    mutation: createSong,
     variables: {
       title: this.state.title
     },
@@ -205,4 +203,32 @@ onLike(id, likes /* property to anticipate */) {
       }
     });
   }
+
+export default compose(
+  graphql(LikeLyric, { name: 'likeLyric ' }) // custom name for mutation (e.g. handling multiple mutations)
+)(MyComponent);
+```
+
+## Tips
+
+- debugging
+
+```javascript
+debugger;
+
+// @browser console
+
+res.graphQLErrors;
+
+res.graphQLErrors.map((error) => error.message);
+```
+
+```js
+this.props
+  .mutation({
+    // mutation options
+  })
+  .catch((res) => {
+    const errors = res.graphQLErrors.map((error) => error.message);
+  });
 ```
