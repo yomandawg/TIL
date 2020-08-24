@@ -1,8 +1,10 @@
 # Redux
 
 ## Cycle
-> Action Creator &rarr; Action &rarr; dispatch &rarr; Reducers &rarr; State\
-* you can only modify the state of the data through the use of dispatch function and the action creators
+
+> Action Creator &rarr; Action &rarr; dispatch &rarr; Reducers &rarr; State
+
+- you can only modify the state of the data through the use of dispatch function and the action creators
 
 1. Action Creator - factory that creates an action
 2. Action - a payload of information with an intention to change the state
@@ -11,6 +13,7 @@
 5. State - the single state value that is managed by the store
 
 ### Example
+
 ```javascript
 const { createStore, combineReducer } = Redux;
 
@@ -51,8 +54,10 @@ store.dispatch(/* action creator */)
 ---
 
 ## react-redux
-> Provider &rarr; App &rarr; Connnect &rarr; Components\
-* integration layer of react and redux
+
+> Provider &rarr; App &rarr; Connnect &rarr; Components
+
+- integration layer of react and redux
 
 1. Provider - a delegate for handling the store
 2. App
@@ -60,19 +65,22 @@ store.dispatch(/* action creator */)
 4. Components
 
 ### Provider
-* make `store` available to any nested components that have been wrapped with `connect` function
+
+- make `store` available to any nested components that have been wrapped with `connect` function
+
 ```javascript
-const stroe = createStore()
+const stroe = createStore();
 
 ReactDom.render(
   <Provider store={store}>
     <App />
   </Provider>,
   document.getElementById('root')
-)
+);
 ```
 
 ### Example
+
 ```javascript
 class SongList extends Component {
   componentDidMount() {
@@ -89,22 +97,22 @@ class SongList extends Component {
 }
 
 // maps state to props when the component is called
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { songs: state.songs /* states to pass onto props */ };
 };
 
 // can increase reusability with ownProps
 const mapStateToProps = (state, ownProps) => {
-  return { songs: state.songs.find(song => song.id === ownProps.songId) };
-}
+  return { songs: state.songs.find((song) => song.id === ownProps.songId) };
+};
 
 // action creator -> action -> connect -> dispatch
 // returns a new, connected component class that wraps the component you passed in.
-export default connect(
-  mapStateToProps, 
-  { selectSong /* action creators to pass onto props */ }
-)(SongList);
+export default connect(mapStateToProps, {
+  selectSong /* action creators to pass onto props */
+})(SongList);
 ```
+
 ```javascript
 // @actions/index.js : action creator error example
 export const fetchPosts = async () => {
@@ -115,45 +123,69 @@ export const fetchPosts = async () => {
     type: 'FETCH_POSTS',
     payload: response // need to return a plain javascript object
   };
-}
+};
 ```
-* above example looks as if the action is returning a valid javascript object => IT IS NOT.
-* when the JS code is compiled back to the ES2015 code, the `async`-`await` syntax is not returning a plain javascript object
-* the returned random action object will then dispatched into reducers which will cause an error
 
+- above example looks as if the action is returning a valid javascript object => IT IS NOT.
+- when the JS code is compiled back to the ES2015 code, the `async`-`await` syntax is not returning a plain javascript object
+- the returned random action object will then dispatched into reducers which will cause an error
 
 ## redux middleware
+
 > action creator &rarr; action &rarr; dispatch &rarr; **middleware** &rarr; reducers &rarr; state
-* middleware to help make requests in a redux app (normally within the *action creators*)
-* called with dispatched action
-* stop, modify, async for actions
+
+- middleware to help make requests in a redux app (normally within the _action creators_)
+- called with dispatched action
+- stop, modify, async for actions
 
 ### redux-thunk
-* action creators can return **functions**\
-&rarr; invokes the function with `dispatch`(change data) and `getState`(read data) as its arguments
+
+- action creators can return **functions**
+  &rarr; invokes the function with `dispatch`(change data) and `getState`(read data) as its arguments
+
 ```javascript
 // @App.js
 const store = createStore(reducers, applyMiddleware(thunk));
-ReactDOM.render(
-  <App store={store} />,
-  document.querySelector('#root')
-);
+ReactDOM.render(<App store={store} />, document.querySelector('#root'));
 ```
-* useful for making request (`async`) by manually dispatching action
+
+- useful for making request (`async`) by manually dispatching action
+
 ```javascript
 // @actions
 // able to return a function
 export const fetchPosts = () => async (dispatch, getState) => {
-    const response = await jsonPlaceholder.get('/post');
+  const response = await jsonPlaceholder.get('/post');
 
-    dispatch({ type: 'FETCH_POSTS', payload: response }) // manually dispatching
+  dispatch({ type: 'FETCH_POSTS', payload: response }); // manually dispatching
+};
+```
+
+### redux-promise
+
+- action creators can return **promise**
+- simpler form of `redux-thunk` (no manual dispatching)
+
+```js
+// actions
+
+export function fetchComments() {
+  const response = axios.get('http://jsonplaceholder.typicode.com/comments');
+
+  return {
+    type: FETCH_COMMENTS,
+    payload: response // return a promise
+  };
 }
 ```
 
-### Reducers
+## Reducers
+
 1. redux invokes every reducers one time on booting to specify the initial state
-  * like ZIR + ZSR in electrical circuit system
-  * reducer must return a **defined** value
+
+- like ZIR + ZSR in electrical circuit system
+- reducer must return a **defined** value
+
 ```javascript
 // define the initialState pseudo-code
 Reducer = (defaultInput, firstAction) => {
@@ -161,19 +193,24 @@ Reducer = (defaultInput, firstAction) => {
   else { /* go onto next step */ }
 }
 ```
-2. next time the reducer is called, it will return the new state(*version 2*) based on previous state and the next action
+
+2. next time the reducer is called, it will return the new state(_version 2_) based on previous state and the next action
 3. will only return the computation of input state + action argument (no outside action involving)
 4. never directly mutate the input state argument
-  * be caustious of returning the same referenced state even after modification
+
+- be caustious of returning the same referenced state even after modification
+
 ```javascript
 //  check if the states has the same reference and value
-hasChanged = false || nextStateForKey !== previousStateForKey
+hasChanged = false || nextStateForKey !== previousStateForKey;
 // return the changed state or the old state
-return hasChanged ? nextState : state
+return hasChanged ? nextState : state;
 // => redux will not recognize changes in state if you simply mutate the state
 // => when redux recognizes the state change => re-render
 ```
+
 #### Recommended practices
+
 ```javascript
 state.pop()           state.filter(element => element !== 'hi)
 state.push('hi')      [...state, 'hi']
