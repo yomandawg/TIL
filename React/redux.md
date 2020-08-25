@@ -218,3 +218,43 @@ state[0] = 'hi'       state.map(el => el === 'hi' ? 'bye' : el)
 state.name = 'yo'     {...state, name: 'yo'}
 delete state.name     {...state, age: undefined} || _.omit(state, 'age')
 ```
+
+## redux-form
+
+```js
+import { reduxForm, Field } from 'redux-form';
+
+class Signup extends Component {
+  onSubmit = (formProps) => {
+    console.log(formProps);
+  };
+
+  render() {
+    const { handleSubmit /* from redux-form */ } = this.props;
+
+    return (
+      <form onSubmit={handleSubmit(this.onSubmit)}>
+        <fieldset>
+          <label>Email</label>
+          <Field name="email" type="text" component="input" />
+        </fieldset>
+        <fieldset>
+          <label>Password</label>
+          <Field name="password" type="password" component="input" />
+        </fieldset>
+        <button>Sign up!</button>
+      </form>
+    );
+  }
+}
+
+export default reduxForm({ form: 'signup' })(Signup);
+```
+
+- `compose` helper
+
+```js
+import { compose } from 'redux';
+
+export default compose(connect(...), reduxForm(...))(Signup);
+```

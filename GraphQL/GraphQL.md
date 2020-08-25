@@ -1,5 +1,13 @@
 # GraphQL
 
+- client has full control of which data it wants from the server
+- explicit and custom _schema_ for fetching data
+- versionless-API - modify API with custom queries
+
+- vs. **REST**
+  - gets _all the resource_ from that endpoint &rarr; _overfetching_
+  - combining fetched datas need separate calls to the server; a single request can be insufficient &rarr; _undefetching_
+
 ### shortcomings of RESTful HTTP methods
 
 > difficult to follow RESTful conventions with highly related data/endpoint
@@ -30,6 +38,19 @@ query {
     }
   }
 }
+```
+
+- with apollo gql
+
+```js
+const { gql } = require('apollo-server');
+
+// create an JS object with GraphQL logic functions
+gql`
+  type Query {
+    greeting: String
+  }
+`;
 ```
 
 ## Example App
@@ -170,7 +191,7 @@ const CompanyType = new GraphQLObjectType({
 
 - GraphQL queries
 
-```graphql
+```js
 query example {
   apple: company(id: "2") {
     ...companyDetails

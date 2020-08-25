@@ -82,6 +82,8 @@ const App = () => {
 };
 ```
 
+- `<Switch>` renders the first matching `<Route>` || `<Redirect>`
+
 - `<BrowserRouter>` is in charge of replacing the view(components) based on the url
 - make use of `props.history`
 
@@ -89,6 +91,7 @@ const App = () => {
 
 - `location`
 - `match` - information about the URL
+  - contains information about how a `<Router path>` matched the URL - things like `params`
 - `history` from `BrowserRouter`
 
 ### Link

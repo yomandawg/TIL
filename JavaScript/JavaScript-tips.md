@@ -135,7 +135,6 @@ console.log(JSON.stringify(pet));
 
 ```json
 // jsconfig.json
-
 {
   "compilerOptions": {
     "baseUrl": "src"
