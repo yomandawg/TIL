@@ -144,6 +144,8 @@ this.props
 * every time there's an update to the `id` of certain data (executed query), update the `object` (React side)
   - need to provide id's to every executed query (mutation)
 
+**DEPRECATED**
+
 ```javascript
 // Apollo Store
 const client = new ApolloClient({
@@ -231,4 +233,29 @@ this.props
   .catch((res) => {
     const errors = res.graphQLErrors.map((error) => error.message);
   });
+```
+
+### graphqlRequest function
+
+```js
+// code reusability
+async function graphqlRequest(query, variables = {}) {
+  const response = await fetch(endpointURL, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ query, variables })
+  });
+
+  const responseBody = await response.json();
+
+  // Error handling
+  if (responseBody.errors) {
+    const message = responseBody.errors
+      .map((error) => error.message)
+      .join('\n');
+    throw new Error(message);
+  }
+
+  return responseBody.data;
+}
 ```

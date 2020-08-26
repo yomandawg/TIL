@@ -191,7 +191,7 @@ const CompanyType = new GraphQLObjectType({
 
 - GraphQL queries
 
-```js
+```ts
 query example {
   apple: company(id: "2") {
     ...companyDetails
@@ -206,11 +206,24 @@ query example {
     }
   }
 }
+```
 
-# type checking
-fragment companyDetails on Company {
+- fragments
+
+```ts
+query JobQuery($id:ID!) {
+  job(id:$id){
+    ...JobDetail
+  }
+}
+
+fragment JobDetail on Job {
   id
-  name
+  title
+  company{
+    id
+    name
+  }
   description
 }
 ```
@@ -267,7 +280,7 @@ const mutation = new GraphQLObjectType({
 
 - mutation query
 
-```graphql
+```ts
 mutation {
   deleteUser(id: "40") {
     # expect null for deletion
@@ -280,7 +293,7 @@ mutation {
 
 - query variables
 
-```graphql
+```ts
 mutation AddSong($title: String) {
   addSong(title: $title) {
     id
