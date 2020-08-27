@@ -1,23 +1,34 @@
 # React
 
 ## React(App) Component
-> the *App function*\
+
+> the _App function_
+
 ### App Component
-> returns JSX and handles events\
-* **Functional** components
+
+> returns JSX and handles events
+
+- **Functional** components
   - produce JSX to show content
-* **Class** components (*legacy*) || Function components with **Hooks**
+- **Class** components (_legacy_) || Function components with **Hooks**
   1. produce JSX to show content
   2. use the Lifecycle Method system to run code at specific points in time
-  3. use the *state* system to update content
+  3. use the _state_ system to update content
+
 #### Nesting (component hierarchy)
-* a component can be shown inside of another - `<MyComponent />`
+
+- a component can be shown inside of another - `<MyComponent />`
+
 #### Reusablity
-* easily reusable componenet
+
+- easily reusable componenet
+
 #### Configuration
-* configure componenet when it's created
+
+- configure componenet when it's created
 
 ### Function Component
+
 ```javascript
 // example
 export default function App() {
@@ -46,6 +57,7 @@ export default function App() {
 ```
 
 ### Class Component
+
 ```javascript
 class App extends React.Component {
   constructor(props) {
@@ -63,6 +75,7 @@ class App extends React.Component {
   }
 }
 ```
+
 ```javascript
 // shorthand syntax
 class App extends React.Component {
@@ -70,37 +83,43 @@ class App extends React.Component {
   ...
 }
 ```
-* binding `this` to the class method
+
+- binding `this` to the class method
+
 ```javascript
 class SearchBar extends React.Component {
   constructor() {
     // 1. bind `this` to the methods on creation of the class
-    this.thisExample = this.thisExample.bind(this)
+    this.thisExample = this.thisExample.bind(this);
   }
 
-  thisExample = event => {
+  thisExample = (event) => {
     // 2. arrow function binds `this` to the object in which it was called on
-  }
+  };
 
   render() {
     return (
       // 3. using the arrow function inside JSX object to pass on the `this` bound function
-      <form onSubmit={e => this.thisExample(e)} />
+      <form onSubmit={(e) => this.thisExample(e)} />
     );
   }
 }
 ```
 
 ### Lifecycle
-1. JS file loaded by the browser &rarr; compiled by *babel*
+
+1. JS file loaded by the browser &rarr; compiled by _babel_
 2. App component gets created
 3. App returns JSX, renders HTML DOM
+
 #### Component Lifecycle
+
 &rarr; `constructor` (new instance is created) - one time setup\
-&rarr; `render` (content visible) - return *JSX*\
-&rarr; `componentDidMount` (calls on the *initial* rendering) - data-loading\
-&rarr; `componentDidUpdate` (calls when *re*-renders) - data-loading on state/props change\
+&rarr; `render` (content visible) - return _JSX_\
+&rarr; `componentDidMount` (calls on the _initial_ rendering) - data-loading\
+&rarr; `componentDidUpdate` (calls when _re_-renders) - data-loading on state/props change\
 &rarr; `componentWillUnmount` (calls right before the lifecycle ends) - cleanup
+
 ```javascript
 class App extends React.Componet {
   constructor(props) {
@@ -132,12 +151,19 @@ class App extends React.Componet {
 ```
 
 ### JSX
+
 > instructions to tell React what content to show\
-* special form of JS: HTML elements + other componenets
+
+- special form of JS: HTML elements + other componenets
+
 1. create a normal HTML element
-  * `div` `span` `h1` `table` ...
+
+- `div` `span` `h1` `table` ...
+
 2. show another component
-  * `Field` `Translate` `Languages`
+
+- `Field` `Translate` `Languages`
+
 ```javascript
 <div> // DOM element found => show `div` on the screen
   <Field /> // component found => call the component function => inspect the outcome JSX
@@ -145,32 +171,35 @@ class App extends React.Componet {
 ```
 
 ### React vs ReactDOM library
-* React (the *reconciler*) - work with components
-* ReactDOM (the *renderer*) - discrete what to show and render HTML DOM elements
+
+- React (the _reconciler_) - work with components
+- ReactDOM (the _renderer_) - discrete what to show and render HTML DOM elements
 
 ## Props
+
 ```javascript
-const Spinner = props => {
-  return (
-    <div>{props.message}</div>
-  )
-}
+const Spinner = (props) => {
+  return <div>{props.message}</div>;
+};
 
 // provide default properties
 Spinner.defaultProps = {
   message: 'Loading...'
-}
+};
 ```
 
 ## State
-* usable with `class` components or `function` components with `hooks`
-* JS object that contains data relevant to a component
-* updating the state causes the component to instantly rerender
+
+- usable with `class` components or `function` components with `hooks`
+- JS object that contains data relevant to a component
+- updating the state causes the component to instantly rerender
 
 ### useState
-* the *state* system
-* keep track of (stores) the dynamic data
-* used to update the HTML
+
+- the _state_ system
+- keep track of (stores) the dynamic data
+- used to update the HTML
+
 ```javascript
 import { useState } from "react";
 ...
@@ -179,9 +208,11 @@ const [text, setText] = useState("");
 ```
 
 #### Refs
-* gives access to a single DOM element
-* create and assign refs in the constructor to instance variables => pass to JSX as props
-* the `ref` receives the underlying DOM element as its current property
+
+- gives access to a single DOM element
+- create and assign refs in the constructor to instance variables => pass to JSX as props
+- the `ref` receives the underlying DOM element as its current property
+
 ```javascript
 class MyComponent extends React.Component {
   constructor(props) {
@@ -197,7 +228,9 @@ const node = this.myRef.current; // accessing that node
 ```
 
 #### external HTML inside JSX
+
 ```javascript
 <span dangerouslySetInnerHTML={{ __html: /* HTML script */ }}></span>
 ```
-* vulnerable for *XSS* attacks
+
+- vulnerable for _XSS_ attacks
