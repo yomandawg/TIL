@@ -76,6 +76,18 @@ class App extends React.Component {
 }
 ```
 
+```js
+class MyComponent extends React.Component {
+  // use constructor when you want to save props data into state
+  constructor(props) {
+    super(props);
+    this.state = {
+      fromProps: props.fromProps
+    };
+  }
+}
+```
+
 ```javascript
 // shorthand syntax
 class App extends React.Component {
@@ -207,7 +219,7 @@ const [language, setLanguage] = useState("ru");
 const [text, setText] = useState("");
 ```
 
-#### Refs
+## Refs
 
 - gives access to a single DOM element
 - create and assign refs in the constructor to instance variables => pass to JSX as props
@@ -220,6 +232,7 @@ class MyComponent extends React.Component {
     this.myRef = React.createRef();
   }
   render() {
+    // pass as props
     return <div ref={this.myRef} />;
   }
 }
@@ -227,7 +240,23 @@ class MyComponent extends React.Component {
 const node = this.myRef.current; // accessing that node
 ```
 
-#### external HTML inside JSX
+```js
+function MyComponent(props) {
+  const myRef = React.createRef();
+
+  useEffect(() => {
+    console.log(myRef.current); // the div#1 element
+  });
+
+  return (
+    <div id={1} ref={myRef}>
+      div #1 element
+    </div>
+  );
+}
+```
+
+### external HTML inside JSX
 
 ```javascript
 <span dangerouslySetInnerHTML={{ __html: /* HTML script */ }}></span>

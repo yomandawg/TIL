@@ -59,9 +59,9 @@ useEffect(
 
 - component is rendered for the &rarr; `second argument`
 
-  1. first time, `[]`
-  2. first time && rerenders, `null`
-  3. first time && rerenders && with data change, `[data]`(changed)
+  1. first render, `[]`
+  2. every render, `null`
+  3. on data change, `[data]`
 
 - the previous **cleanup** function will be called when the component is rerendered (**_when the component is removed_**) and `useEffect` is re-called
 
