@@ -33,21 +33,21 @@ const mutation = new GraphQLInputObjectType({
       type: UserType,
       args: {
         email: { type: GraphQLString },
-        password: { type: GraphQLString }
+        password: { type: GraphQLString },
       },
       resolve(parentValue, args, request /*request from express*/) {
         // signup helper - presumably passport api
-      }
+      },
     },
     login: {
       type: UserType,
       args: {
         email: { type: GraphQLString },
-        password: { type: GraphQLString }
+        password: { type: GraphQLString },
       },
       resolve(parentValue, { email, password }, request) {
         // login helper - presumably passport api
-      }
+      },
     },
     logout: {
       type: UserType,
@@ -55,9 +55,9 @@ const mutation = new GraphQLInputObjectType({
         const { user } = req;
         req.logout(); // passport api
         return user;
-      }
-    }
-  }
+      },
+    },
+  },
 });
 ```
 
@@ -71,13 +71,13 @@ const mutation = new GraphQLInputObjectType({
 const networkInterface = createNetworkInterface({
   uri: '/graphql',
   opts: {
-    credentials: 'same-origin' // the request is from the same browser; safe to send cookies
-  }
+    credentials: 'same-origin', // the request is from the same browser; safe to send cookies
+  },
 });
 
 const client = new ApolloClient({
   networkInterface,
-  dataIdFromObject: (object) => object.id
+  dataIdFromObject: (object) => object.id,
 });
 ```
 

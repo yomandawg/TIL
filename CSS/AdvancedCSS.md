@@ -2,8 +2,6 @@
 
 ## Theme Nesting
 
-## Dynamic Styles
-
 ## Self-Support
 
 ## JSS
