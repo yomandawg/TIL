@@ -1,19 +1,22 @@
 # SEO
 
 ## Open Graph Protocol
-* standard metadata within a website to represent the content of a page
-* customizing `meta` tags depending on the page that the user is visiting
-* e.g. Twiter/FB/Linkedin *bots* accesses(scrapes) page &harr; appropriate `meta` tags
 
+- standard metadata within a website to represent the content of a page
+- customizing `meta` tags depending on the page that the user is visiting
+- e.g. Twiter/FB/Linkedin _bots_ accesses(scrapes) page &harr; appropriate `meta` tags
 
 ## react-helmet
-* *dynamically* set the document's head
 
-* normal react app
-  - client visits link &rarr; render Helmet tag &rarr; *Helmet* takes new tags and manually tinkers with HTML in head tag
+- _dynamically_ set the document's head
 
-* SSR react app
-  - client visits link &rarr; render Helmet tag &rarr; *Helmet* loads up all the meta tags we want to show &rarr; dump Helmet tags directly into HTML template
+- normal react app
+
+  - client visits link &rarr; render Helmet tag &rarr; _Helmet_ takes new tags and manually tinkers with HTML in head tag
+
+- SSR react app
+  - client visits link &rarr; render Helmet tag &rarr; _Helmet_ loads up all the meta tags we want to show &rarr; dump Helmet tags directly into HTML template
+
 ```javascript
 // some page
 render() {
@@ -30,6 +33,7 @@ render() {
   )
 }
 ```
+
 ```javascript
 // helpers/renderer.js
 export default (req, store, context) => {
@@ -45,14 +49,15 @@ export default (req, store, context) => {
         ...
 ```
 
-
 ### TTFB
+
 > time-to-first-byte\
 
-* get content to users ASAP.
+- get content to users ASAP.
 
-* `RenderToString`
-  * response has the entire HTML document
+- `RenderToString`
+  - response has the entire HTML document
+
 ```javascript
 // index.js (express server)
 const content = renderer(req, store, context);
@@ -60,7 +65,28 @@ const content = renderer(req, store, context);
 res.send(content);
 ```
 
-* `RenderToNodeStream`
-  * response has a tiny snippet of HTML document
-  * possible detour in response such as `Redirect`(for auth variations) or changing the status code is not possible because the response HTML is sent in pieces
-  * only used when TTFB response is confident that the content won't change during application rendering process
+- `RenderToNodeStream`
+  - response has a tiny snippet of HTML document
+  - possible detour in response such as `Redirect`(for auth variations) or changing the status code is not possible because the response HTML is sent in pieces
+  - only used when TTFB response is confident that the content won't change during application rendering process
+
+### Good Tags
+
+#### Meta Tags
+
+- about 160 characters long
+- contains keywords
+- express value/specification
+- call to action
+
+```js
+// next.js example
+<Head>
+  <title key="title">Home | NNGG</title>
+  <meta
+    name="desciption"
+    key="description"
+    content="This is the Home Page description"
+  />
+</Head>
+```
