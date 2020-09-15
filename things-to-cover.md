@@ -54,3 +54,7 @@ Functional components (and the hooks that go with them) just give you a differen
 - loadData on client side (for SPA, request to API twice is unnecessary?)
 
 - `RenderToString` vs. `RenderToNodeStream`
+
+---
+
+- refs instead of ids

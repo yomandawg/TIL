@@ -6,6 +6,25 @@
 - customizing `meta` tags depending on the page that the user is visiting
 - e.g. Twiter/FB/Linkedin _bots_ accesses(scrapes) page &harr; appropriate `meta` tags
 
+```html
+<meta property="og:type" content="website" />
+<meta property="og:image" content="somestaticimg" />
+<meta property="og:image:type" content="img/png" />
+<!-- recommended size -->
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="company logo" />
+
+<!-- for pages -->
+<!-- key="og:title" points to the unique property -->
+<!-- About -->
+<meta property="og:title" content="About | NNGG" key="og:title" />
+<meta property="og:url" content="about page url" key="og:url" />
+<!-- Home -->
+<meta property="og:title" content="Home | NNGG" key="og:title" />
+<meta property="og:url" content="home page url" key="og:url" />
+```
+
 ## react-helmet
 
 - _dynamically_ set the document's head
@@ -70,9 +89,7 @@ res.send(content);
   - possible detour in response such as `Redirect`(for auth variations) or changing the status code is not possible because the response HTML is sent in pieces
   - only used when TTFB response is confident that the content won't change during application rendering process
 
-### Good Tags
-
-#### Meta Tags
+### Meta Tags
 
 - about 160 characters long
 - contains keywords
@@ -90,3 +107,27 @@ res.send(content);
   />
 </Head>
 ```
+
+### Canonical Tags
+
+- tells search engines which url is the correct version of the page - provisional indexing
+  - ex) `https://`, `http://`, `https://www`
+
+```html
+<link rel="canonical" href="the main url" key="canonical" />
+```
+
+### robots.txt
+
+- rules on how site can be crawled
+- links to `sitemap.xml`
+
+### sitemap.xml
+
+- informs search engines of the site structure
+- provides the meta information about individual pages
+- versioning(updates from the site) for the search engine crawlers
+
+## Best Practices
+
+- provide both `<h1>` for main content & `<title>` for title of the page

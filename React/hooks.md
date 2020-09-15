@@ -116,6 +116,43 @@ useEffect(() => {
 }, [debouncedTerm]);
 ```
 
+### useContext
+
+```js
+const ThemeContext = React.createContext();
+
+function App() {
+  const [darkTheme, setDarkTheme] = React.useState(true);
+
+  function toggleTheme() {
+    setDarkTheme((prevDarkTheme) => !prevDarkTheme);
+  }
+
+  return (
+    <ThemeContext.Provider value={darkTheme}>
+      <button onClick={toggleTheme}>Toggle Theme</button>
+      <FunctionComponent />
+      <ClassComponent />
+    </ThemeContext.Provider>
+  );
+}
+
+function FunctionComponent() {
+  // returns the value from the context
+  const darkTheme = React.useContext(ThemeContext);
+
+  // no complex nesting to use the context (vs. class `<ThemeContext.Consumer>`)
+  const themeStyles = {
+    backgroundColor: darkTheme ? '#333' : '#CCC',
+    color: darkTheme ? '#CCC' : '#333',
+    padding: '2rem',
+    margin: '2rem',
+  };
+
+  return <div style={themeStyles}>Function</div>;
+}
+```
+
 ### useRef
 
 > `ref` in a function component
@@ -211,8 +248,8 @@ const useVideos = (defaultSearchTerm) => {
   const search = async (term) => {
     const response = await youtube.get('/search', {
       params: {
-        q: term
-      }
+        q: term,
+      },
     });
 
     setVideos(response.data.items);
