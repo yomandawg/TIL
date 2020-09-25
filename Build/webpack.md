@@ -1,68 +1,80 @@
 # Webpack
+
 > Get multiple source files and bundle them together as a single file
 
 ## Bundler
-* 파일 충돌 방지
-* **module** - XML namespace (`xmlns`)와 비슷한 개념
+
+- 파일 충돌 방지
+- **module** - XML namespace (`xmlns`)와 비슷한 개념
 
 ```javascript
 // index.html
 <script type="module">
-    import hello_word from "./source/hello.js" // hello.js의 word
-    import world_word from "./source/world.js" // world.js의 word
-</script>
+  import hello_word from "./source/hello.js" // hello.js의 word import
+  world_word from "./source/world.js" // world.js의 word
+</script>;
 
 // hello.js
-var word = "Hello";
+var word = 'Hello';
 export default word;
 
 // world.js
-var word = "World";
+var word = 'World';
 export default word;
 ```
 
 ## Package.json
+
 > `npm init` - 현재 directory를 node.js project로 선언
-* 프로젝터 정보 파일
-* `devDependencies`
 
-* `npm install -D webpack webpack-cli`
-  * `-D` - 개발용
+- 프로젝터 정보 파일
+- `devDependencies`
 
-* `npx` - 프로젝트 안의 package execute
+- `npm install -D webpack webpack-cli`
+
+  - `-D` - 개발용
+
+- `npx` - 프로젝트 안의 package execute
 
 ## bundling
-* `npx webpack --entry ./source/index.js --output ./public/index_bundle.js`
-* `npx webpack --config webpack.config.js`
-* `npx webpack --watch`
+
+- `npx webpack --entry ./source/index.js --output ./public/index_bundle.js`
+- `npx webpack --config webpack.config.js`
+- `npx webpack --watch`
 
 ### Development
+
 > `mode: 'development'`
 
-### Production 
+### Production
+
 > `mode: 'production'`
 
-
 ## Loader
+
 > JavaScript 외의 파일들까지 bundling
-* Asset Management
-  * static files
-  * `npm install --save-dev style-loader css-loader`
+
+- Asset Management
+  - static files
+  - `npm install --save-dev style-loader css-loader`
 
 ## Plugin
-* `HtmlWebpackPlugin` - simplifies creation of HTML files to serve webpack bundles
+
+- `HtmlWebpackPlugin` - simplifies creation of HTML files to serve webpack bundles
 
 ---
 
 # Modern JavaScript
 
 ## Installation
+
 ```bash
 npm install webpack webpack-cli --save-dev # install
 node_modules/.bin/webpack # execution => to compressed js
 ```
 
 ## Setting
+
 ```javascript
 // webpack.config.js
 const path = require('path');
@@ -70,11 +82,13 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist/assets'),
-    filename: 'bundle.js'
-  }
+    filename: 'bundle.js',
+  },
 };
 ```
-* `__dirname`: absolute relative path of the project
+
+- `__dirname`: absolute relative path of the project
+
 ```json
 // @package.json npm automation
 "scripts": {
@@ -85,7 +99,9 @@ module.exports = {
 ```
 
 ## import/export
+
 ### Named
+
 ```javascript
 // @index.js
 import './dom'; // shortening of './dom.js'
@@ -94,6 +110,7 @@ import './dom'; // shortening of './dom.js'
 addTitle('test'); // => err!
 // `import` runs the file but not shares any variables or functions
 ```
+
 ```javascript
 // @dom.js
 // export keyword to share things
@@ -112,12 +129,13 @@ import { styleBody, addTitle } from './dom'; // specific import to use them
 ```
 
 ### Default
+
 ```javascript
 // @data.js
 const users = [
   // something
 ];
-export default users // there's only one default per file
+export default users; // there's only one default per file
 
 export { getPremUsers, users as default }; // alternative way
 
@@ -127,16 +145,17 @@ import yo from './data'; // import `default`
 import yo, { getPremUsers } from './data'; // along with `named` exports
 ```
 
-
 ## webpack-dev
-* `npm install webpack-dev-server --save-dev`
-* webpack dev server automatically watches for changes
-  * don't need the `-w` flag
-  * however, the physical code is not manifested to `bundle.js`
-  * instead, webpack runs the changes on memory, which speeds up webpack-dev-server
-  * webpack-dev-server actually serves virtual files from assets
+
+- `npm install webpack-dev-server --save-dev`
+- webpack dev server automatically watches for changes
+  - don't need the `-w` flag
+  - however, the physical code is not manifested to `bundle.js`
+  - instead, webpack runs the changes on memory, which speeds up webpack-dev-server
+  - webpack-dev-server actually serves virtual files from assets
 
 ### Setting
+
 ```json
 // @package.json
 "scripts": {
@@ -145,6 +164,7 @@ import yo, { getPremUsers } from './data'; // along with `named` exports
     "serve": "webpack-dev-server --mode development" // take it as the 'live server' in 'development' mode
   },
 ```
+
 ```javascript
 // @webpack.config.js
 module.exports = {
@@ -163,15 +183,18 @@ module.exports = {
 ```
 
 ### Develop vs. Production Mode
-* **Develop** - webpack processes faster but not optimized
-* **Production** - slower but more efficient and smaller in size
 
+- **Develop** - webpack processes faster but not optimized
+- **Production** - slower but more efficient and smaller in size
 
 ## Loaders
+
 > tasks for webpack\
 
 ### Babel
-* `npm install babel-loader --save-dev`
+
+- `npm install babel-loader --save-dev`
+
 ```javascript
 module.exports = {
   ...
@@ -191,9 +214,11 @@ module.exports = {
 ```
 
 ### CSS
-* `npm install css-loader style-loader --save-dev`
-  * `css-loader` - webpack collects CSS's
-  * `style-loader` - take that CSS and add it to the HTML page `<style>...</style>`
+
+- `npm install css-loader style-loader --save-dev`
+  - `css-loader` - webpack collects CSS's
+  - `style-loader` - take that CSS and add it to the HTML page `<style>...</style>`
+
 ```javascript
 // @webpack.config.js
 module.exports = {
@@ -209,7 +234,9 @@ module.exports = {
   }
 };
 ```
-* with `reactjs`
+
+- with `reactjs`
+
 ```javascript
 import './SeasonDisplay.css'; // webpack imports the css file and adds it into the index.html
 ```

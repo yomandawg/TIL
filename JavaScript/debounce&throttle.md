@@ -19,3 +19,16 @@ export const debounce = (func, delay) => {
 ```
 
 # Throttling
+
+```js
+let timer = null;
+function throttleGetPost() {
+  if (!timer) {
+    loading.classList.add('show');
+    timer = setTimeout(function () {
+      timer = null;
+      getPost();
+    }, 500);
+  }
+}
+```

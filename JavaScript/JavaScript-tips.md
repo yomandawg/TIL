@@ -8,7 +8,7 @@
 const beforeReduce = [
   { name: 'ray', address: 'Fullerton' },
   { name: 'yj', address: 'Dongtan' },
-  { name: 'uos', address: 'Seoul' }
+  { name: 'uos', address: 'Seoul' },
 ];
 
 const getReduced = (data) => {
@@ -89,7 +89,7 @@ myFunc.call(/* binds `this` */, ...['yo', 'man']) // ES6 spreads
 
 ```javascript
 const animal = {
-  eat: 'Nom'
+  eat: 'Nom',
 };
 const dog = Object.create(animal);
 dog.isPrototypeOf(animal); // true
@@ -110,7 +110,7 @@ dog.eat; // MeowMeow
 
 ```javascript
 const pet = {
-  name: 'yo'
+  name: 'yo',
 };
 
 pet.toJSON = function () {
@@ -147,4 +147,61 @@ console.log(JSON.stringify(pet));
 
 ```env
 NODE_PATH=src/
+```
+
+## Async vs Defer
+
+- async - allows asynchronous JS downloading during HTML parsing; JS executes right after the download
+- cannot guarantee the loading sequence depending on the network speed
+
+<table>
+  <tbody>
+    <tr>
+      <td>HTML Parsing</td>
+      <td style="text-align:right" colspan="4">-------------></td>
+      <td colspan="1"></td>
+      <td>---></td>
+    </tr>
+    <tr>
+      <td>JS Downloading</td>
+      <td colspan="3"></td>
+      <td style="text-align:right">------></td>
+    </tr>
+    <tr>
+      <td>JS Executing</td>
+      <td colspan="4"></td>
+      <td>---></td>
+    </tr>
+  </tbody>
+</table>
+
+```html
+<script async src="script.js"></script>
+```
+
+- defer - allows async JS downloading & executes after HTML; allows JS to execute in order
+
+<table>
+  <tbody>
+    <tr>
+      <td>HTML Parsing</td>
+      <td style="text-align:right" colspan="5">----------------></td>
+      <td colspan="1"></td>
+    </tr>
+    <tr>
+      <td>JS Downloading</td>
+      <td colspan="3"></td>
+      <td style="text-align:right" colspan="1">------></td>
+      <td colspan="1"></td>
+    </tr>
+    <tr>
+      <td>JS Executing</td>
+      <td colspan="5"></td>
+      <td>---></td>
+    </tr>
+  </tbody>
+</table>
+
+```html
+<script defer src="script.js"></script>
 ```
