@@ -1,43 +1,38 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { DefinePlugin } = require('webpack');
 const fs = require('fs');
+const { DefinePlugin } = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
-const $SECTIONS = fs.readdirSync('./Posts');
+const $SECTIONS = fs.readdirSync('TIL');
 const $POSTS = $SECTIONS.map((section) => {
-  return { [section]: fs.readdirSync(`./Posts/${section}`) };
+  return { [section]: fs.readdirSync(`TIL/${section}`) };
 });
 
 /**@type {import('webpack').Configuration} */
 module.exports = {
-  entry: './src/index.js',
-  output: {
-    filename: 'app.bundle.js',
-    path: path.join(__dirname, 'dist'),
-    publicPath: '/',
-  },
+  entry: './src/index.jsx',
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
-        options: {
-          presets: ['@babel/preset-env', '@babel/preset-react'],
-        },
-      },
-      {
-        test: /\.(png|jpe?g|gif|md)$/,
-        use: ['file-loader'],
       },
     ],
   },
+  resolve: {
+    extensions: ['*', '.js', '.jsx'],
+  },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/public/index.html',
-    }),
     new DefinePlugin({
       $POSTS: JSON.stringify($POSTS),
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+    }),
+    new CopyPlugin({
+      patterns: [{ from: path.resolve(__dirname, 'TIL'), to: 'TIL' }],
     }),
   ],
 };
