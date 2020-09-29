@@ -2,8 +2,8 @@
 
 > 최단 경로 알고리즘
 
-* 네트워크 라우터가 최단 경로로 종점을 찾을 때 유용
-* O((V+E)logV)
+- 네트워크 라우터가 최단 경로로 종점을 찾을 때 유용
+- O((V+E)logV)
 
 ```python
 from heapq import heapify, heappush, heappop
@@ -24,6 +24,6 @@ def dijkstra(graph, root):
                 distance[v] = temp
                 previous[v] = u
                 heappush(heapQ, v) # V
-    
+
     return distance, previous
 ```

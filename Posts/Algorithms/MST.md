@@ -3,8 +3,10 @@
 > 최소 신장 트리
 
 ## Prim Algorithm
-* heapq 갱신
-* O(ElogV)
+
+- heapq 갱신
+- O(ElogV)
+
 ```python
 # weighted graph `G`, edge `w`, root `r`
 def MST-Prim(G, w, r):
@@ -22,8 +24,10 @@ def MST-Prim(G, w, r):
 ```
 
 ## Kruskal Algorithm
-* union-find 및 rank 유지
-* O(ElogV)
+
+- union-find 및 rank 유지
+- O(ElogV)
+
 ```python
 parent = {}
 rank = {}

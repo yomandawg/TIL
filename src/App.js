@@ -18,7 +18,7 @@ const App = ({ posts }) => {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/posts/:section/:post" component={Post} />
-          <Route path="/posts/:section" component={Section} props={posts} />
+          <Route path="/posts/:section" children={<Section posts={posts} />} />
           <Route path="/posts" children={<Posts posts={posts} />} />
         </Switch>
       </Article>

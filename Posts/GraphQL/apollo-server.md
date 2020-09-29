@@ -24,8 +24,8 @@ const resolvers = {
   Query: {
     greeting: () => {
       // do sometihng
-    }
-  }
+    },
+  },
 };
 ```
 
@@ -46,7 +46,7 @@ const app = expresss();
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
 apolloServer.applyMiddleware({
   app,
-  path: '/graphql' /* graphql server endpoint */
+  path: '/graphql' /* graphql server endpoint */,
 });
 ```
 
@@ -85,11 +85,11 @@ const resolvers = {
   // Root query
   Query: {
     job: (root, { id }) => db.jobs.get(id), // variable resolver
-    jobs: () => db.jobs.list()
+    jobs: () => db.jobs.list(),
   },
   Job: {
-    company: (job) => db.companies.get(job.companyId)
-  }
+    company: (job) => db.companies.get(job.companyId),
+  },
 };
 ```
 
@@ -112,8 +112,8 @@ export async function loadJob(jobId) {
           description
         }
       }`,
-      variables: { jobId }
-    })
+      variables: { jobId },
+    }),
   });
 
   const responseBody = await response.json();
@@ -258,7 +258,7 @@ async function login(email, password) {
   const response = await fetch(loginEndpoint, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password }),
   });
 
   if (response.ok) {
@@ -284,7 +284,7 @@ function isLoggedIn() {
 const request = {
   method: 'POST',
   headers: { 'content-type': 'application/json' },
-  body: JSON.stringify({ query, variables })
+  body: JSON.stringify({ query, variables }),
 };
 
 if (isLoggedIn()) {

@@ -9,7 +9,7 @@ import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
 
 const client = new ApolloClient({
   link: new HttpLink({ uri: endpointURL }), // Apollo client link
-  cache: new InMemoryCache() // caching methods
+  cache: new InMemoryCache(), // caching methods
 });
 ```
 
@@ -50,8 +50,8 @@ const authLink = new ApolloLink((operation, forward) => {
     operation.setContext({
       // used in `HttpLink`
       headers: {
-        authorization: 'Bearer' + getAccessToken()
-      }
+        authorization: 'Bearer' + getAccessToken(),
+      },
     });
   }
 
@@ -62,9 +62,9 @@ const client = new ApolloClient({
   link: ApolloLink.from([
     // Link chaining
     authLink,
-    new HttpLink({ uri: endpointURL })
+    new HttpLink({ uri: endpointURL }),
   ]),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 ```
 

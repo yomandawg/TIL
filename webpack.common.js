@@ -37,7 +37,6 @@ module.exports = {
       template: './src/public/index.html',
     }),
     new DefinePlugin({
-      $SECTIONS: JSON.stringify($SECTIONS),
       $POSTS: JSON.stringify($POSTS),
     }),
   ],

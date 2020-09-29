@@ -24,10 +24,10 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-root-import',
       options: {
-        root: path.join(__dirname, 'src')
-      }
-    }
-  ]
+        root: path.join(__dirname, 'src'),
+      },
+    },
+  ],
 };
 ```
 

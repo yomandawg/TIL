@@ -1,7 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-const Posts = () => {
-  return <div>section</div>;
+const Section = ({ posts }) => {
+  const { section } = useParams();
+
+  const items = Object.values(
+    posts.filter((post) => Object.keys(post) == section)[0]
+  )[0];
+
+  return (
+    <ul>
+      {items.map((post, index) => {
+        return (
+          <li key={index}>
+            <Link to={`/posts/${section}/${post.slice(0, -3)}`}>
+              {post.slice(0, -3)}
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
 };
 
-export default Posts;
+export default Section;
