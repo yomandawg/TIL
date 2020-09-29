@@ -1,4 +1,4 @@
-*.js
+.vscode/
+node_modules/
 OMSCS/
 woowah/
-.vscode/
