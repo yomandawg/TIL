@@ -55,7 +55,3 @@ blob.text().then((res) => console.log(res)); // Hello world
   URL.revokeObjectURL(link.href); // extinguish the used object URL
 </script>
 ```
-
-## Proxy & Reflect
-
-## Cache
