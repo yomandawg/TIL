@@ -6,5 +6,3 @@
   - be aware of providing the full URI with the in the `Referer` across all origins &rarr; privacy-hindering act & security risk
 
 ### Referrer-Policy
-
-1.

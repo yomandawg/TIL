@@ -1,5 +1,7 @@
 # Cookies
 
+## Cookie Sessions
+
 - Security flags for session cookies (bcrypt'ed)
 
 ```
