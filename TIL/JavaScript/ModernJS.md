@@ -69,8 +69,12 @@ console.log(userOne, userTwo); // {'yo', 40}, {'yo', 40}
     - `e.target === item`, `e.target.tagName`
     - `'mousemove'`: `e.offsetX`, `e.offsetY`
     - `submit`: `e.preventDefault`
-- Event Bubbling - 'bubbles up' to execute its parent's event
-  - `e.stopPropagation` - prevents invoking parent event
+- Event Bubbling - 'bubbles up' to execute its parent's event - direction: child &rarr; parent
+  - `e.stopPropagation` - stops this handler for this event
+  - `e.stopImmediatePropagation` - prevents all all handlers for this event
+  - `e.target` - the top of the bubble chain
+  - `e.currentTarget`- current place in the bubble chain
+- Event Capturing - direction: parent &rarr; child
 
 ## RegEx
 

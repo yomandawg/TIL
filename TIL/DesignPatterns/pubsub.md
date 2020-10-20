@@ -1,6 +1,4 @@
-# Design Patterns
-
-## PubSub
+# PubSub
 
 ```js
 function PubSub() {
@@ -72,5 +70,3 @@ TodosComponent.pubsub.publish(
   () => (TodosComponent.data.header = 'Complete Todos')
 );
 ```
-
-## Proxy

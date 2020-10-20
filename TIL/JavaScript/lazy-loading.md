@@ -64,3 +64,57 @@ image.onload = function () {
   <img src="lazy-load.jpg" />
 </noscript>
 ```
+
+---
+
+## Intersection Observer
+
+```js
+const observer = new IntersectionObserver(callback, options);
+document.querySelectorAll('.img').forEach((imgElement) => {
+  observer.observe(imgElement);
+});
+```
+
+- loading from `data-src` attribute
+
+```js
+const callback = (entries, observer) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting && entry.target.tagName === 'IMG') {
+      let imgSrc = entry.target.getAttribute('data-src');
+      if (imgSrc) {
+        entry.target.src = imgSrc;
+      }
+      observer.unobserve(entry.target);
+    }
+  });
+};
+```
+
+- replacing a LQIP
+
+```js
+const callback = (entries, observer) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting && entry.target.tagName === 'IMG') {
+      entry.target.src = entry.target.src.replace('size=100', 'size=1000');
+      observer.unobserve(entry.target);
+    }
+  });
+};
+```
+
+## Scroll Event
+
+```js
+window.addEventListener('scroll', () => {
+  // document height - window height = scrollable height
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const scrolled = window.scrollY;
+
+  if (Math.ceil(scrolled) === scrollable) {
+    console.log('bottom');
+  }
+});
+```
